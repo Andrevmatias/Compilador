@@ -3,6 +3,8 @@ package br.edu.ufsc.compilador.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.swing.AbstractButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,8 +21,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import br.edu.ufsc.compilador.core.Compilador;
-import br.edu.ufsc.compilador.core.ResultadoAnalise;
+import br.edu.ufsc.compilador.analisadores.LexicalError;
+import br.edu.ufsc.compilador.analisadores.Lexico;
+import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
  * @author André Victória Matias 
@@ -50,11 +52,7 @@ public class JanelaEditor extends JFrame {
 	private final int NUM_LINES = 20;
 	private final int NUM_CHARS = 40;
 
-	private Compilador compilador;
-
-	public JanelaEditor(Compilador compilador) {
-
-		this.compilador = compilador;
+	public JanelaEditor() {
 		
 		setTitle("Compilador");
 
@@ -113,11 +111,40 @@ public class JanelaEditor extends JFrame {
 		
 		lexicoMenu = new JMenu("Léxico");
 		lexicoMenu.setMnemonic(KeyEvent.VK_L);
-		lexicoMenu.addActionListener(new ActionListener() {
+		lexicoMenu.addMouseListener(new MouseListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent ev) {
 				String codigo = editorText.getText();
-				ResultadoAnalise resultado = compilador.analizarLexica(codigo);
+				Lexico analisadorLexico = new Lexico(codigo);
+				Token token;
+				try {
+					while((token = analisadorLexico.nextToken()) != null);
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							"Sem erros", "Análise Léxica", 
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (LexicalError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Léxico", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				}
 			}
 		});
 		
@@ -127,8 +154,7 @@ public class JanelaEditor extends JFrame {
 		sintaticoMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String codigo = editorText.getText();
-				ResultadoAnalise resultado = compilador.analizarSintatico(codigo);
+				//TODO: Análise sintática
 			}
 		});
 		
@@ -138,8 +164,7 @@ public class JanelaEditor extends JFrame {
 		semanticoMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String codigo = editorText.getText();
-				ResultadoAnalise resultado = compilador.analizarSemantico(codigo);
+				//TODO: Análise Semântica
 			}
 		});
 		
