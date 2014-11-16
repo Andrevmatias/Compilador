@@ -1,12 +1,15 @@
 #Options
 GenerateScanner = true
-GenerateParser = false
+GenerateParser = true
 Language = Java
 ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
 Package = br.edu.ufsc.compilador.analisadores
 ScannerCaseSensitive = true
 ScannerTable = Compact
 Input = String
+Parser = LL
 #RegularDefinitions
 L: [a-zA-Z]
 D: [0-9]
@@ -21,16 +24,13 @@ id: ({L}|@({L}|{D}))({E}({L}|{D})|{L}|{D})*
 : {BAR}{BAR}.*(\n)?
 : /\*(.|\n)*\*/
 
-c_inteiro: {D}+{EXP}?
-c_real: {D}+\.{D}+{EXP}?
-c_cadeia: '(.|''|\n)*'
+num_int: {D}+{EXP}?
+num_real: {D}+\.{D}+{EXP}?
+literal: '(.|''|\n)*'
 
 var = id : "var"
 caracter = id : "caracter"
 cadeia = id : "cadeia"
-funcao = id : "funcao"
-inicio = id : "inicio"
-fim = id : "fim"
 inteiro = id : "inteiro"
 booleano = id : "booleano"
 se = id : "se"
@@ -48,6 +48,14 @@ faca = id : "faca"
 real = id : "real"
 vetor = id : "vetor"
 enquanto = id : "enquanto"
+programa = id : "programa"
+const = id : "const"
+metodo = id : "metodo"
+ref = id : "ref"
+val = id : "val"
+registro = id : "registro"
+retorne = id : "retorne"
+div = id : "div"
 
 ";"
 ","
@@ -64,9 +72,134 @@ enquanto = id : "enquanto"
 "*"
 "/"
 ":"
-
 ":="
 ".."
 "<>"
 "<="
 ">="
+"{"
+"}"
+#NonTerminals
+<programa>
+<bloco>
+<dcl_const>
+<dcl_var>
+<dcl_metodos>
+<dcl_metodo>
+<par_formais>
+<rep_par>
+<tipo_metodo>
+<lid>
+<rep_lid>
+<mp_par>
+<tipo>
+<constante>
+<tipo_pre_definido>
+<lista_com>
+<rep_lista_com>
+<comando>
+<senaoparte>
+<rcomid>
+<rep_expr>
+<expressao>
+<resto_expressao>
+<oprel>
+<expsimp>
+<rep_expsimp>
+<op_add>
+<termo>
+<rep_termo>
+<op_mult>
+<fator>
+<var>
+<rvar>
+<constante_explicita>
+#Grammar
+<programa> ::= programa id  ";"  <bloco> "." ;
+
+<bloco> ::= <dcl_const>  <dcl_var> <dcl_metodos>  "{"  <lista_com>  "}" ;
+ 
+<dcl_const> ::= const id "=" <constante>   ";"  <dcl_const> | î ;
+
+<dcl_var> ::= var  <lid>   ":"  <tipo> ";"   <dcl_var> | î ;
+ 
+<dcl_metodos> ::= <dcl_metodo>  ";"  <dcl_metodos>  |  î ;
+
+<dcl_metodo> ::= metodo id   <par_formais>    <tipo_metodo> ";"   <bloco>  ;                 
+
+<par_formais> ::= "(" <mp_par> <lid>  ":" <tipo_pre_definido> <rep_par> ")" | î ;                      
+
+<rep_par> ::= ";" <mp_par>  <lid>   ":"  <tipo_pre_definido>  <rep_par>  |  î ;
+
+<tipo_metodo> ::=   ":"  <tipo_pre_definido>  |  î  ;
+
+<lid> ::=  id  <rep_lid> ;
+
+<rep_lid> ::=  ","  <lid>  |  î  ;
+
+<mp_par>  ::= ref  |  val ;
+
+<tipo> ::=   <tipo_pre_definido> 
+             |  cadeia "[" <constante> "]"  
+             |  vetor  "[" <constante>  ".."  <constante> "]" de <tipo_pre_definido> 
+             |  registro "{"  <dcl_var>  "}" ;
+
+<constante> ::= id  |  <constante_explicita> ;
+	     
+<tipo_pre_definido> ::=  inteiro | real | booleano | caracter ;
+
+<lista_com>   ::=  <comando>  <rep_lista_com> ;
+
+<rep_lista_com> ::=  ";"  <comando>  <rep_lista_com>  |  î ;
+
+<comando> ::= id <rcomid>
+             |  "{"  <lista_com>  "}"
+             |  se <expressao> entao <comando> <senaoparte> 
+             |  enquanto <expressao> faca <comando>                               
+             |  leia "(" <var> ")"                                    
+             |  escreva "(" <expressao>  <rep_expr> ")"  
+	    |  retorne <expressao>
+	    |  î ;
+
+<senaoparte> ::= senao  <comando>  | î ;
+
+<rcomid> ::= ":=" <expressao> 
+               |   "[" <expressao> "]" ":=" <expressao> 
+               |   "(" <expressao> <rep_expr> ")" 
+	      |   "." id
+               |   î ;
+
+<rep_expr>  ::= "," <expressao> <rep_expr> | î ;
+
+<expressao>  ::= <expsimp> <resto_expressao> ;
+
+<resto_expressao> ::= <oprel> <expsimp> | î ;
+
+<oprel> ::= "=" | "<" | ">" | ">=" | "<=" | "<>" ;
+
+<expsimp> ::= <termo> <rep_expsimp> ;
+
+<rep_expsimp> ::= <op_add> <termo> <rep_expsimp> | î ;
+                      
+<op_add> ::= "+" | "-" | ou ;
+
+<termo> ::= <fator> <rep_termo> ;
+
+<rep_termo> ::= <op_mult> <fator> <rep_termo> | î ;
+
+<op_mult> ::= "*" | "/" | e | div ;
+
+<fator> ::= nao <fator> 
+              | "-"  <fator>
+     	     |  "("  <expressao> ")" 
+	     |  <var>
+	     |  <constante_explicita> ;
+
+<var>   ::= id  <rvar>;
+
+<rvar> ::= "(" <expressao> <rep_expr> ")"  
+              |  "[" <expressao> "]"
+	     |  "."  id
+              |   î ;
+  
+<constante_explicita>::=   num_int  |  num_real  |  falso  |  verdadeiro  |  literal;
