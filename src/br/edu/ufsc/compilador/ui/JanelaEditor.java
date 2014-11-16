@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -53,7 +55,6 @@ public class JanelaEditor extends JFrame {
 	private final int NUM_CHARS = 40;
 
 	public JanelaEditor() {
-		
 		setTitle("Compilador");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,6 +71,9 @@ public class JanelaEditor extends JFrame {
 		buildMenuBar();
 
 		pack();
+		
+		setLocationRelativeTo(null);
+		
 		setVisible(true);
 	}
 
@@ -133,17 +137,21 @@ public class JanelaEditor extends JFrame {
 			public void mouseClicked(MouseEvent ev) {
 				String codigo = editorText.getText();
 				Lexico analisadorLexico = new Lexico(codigo);
-				Token token;
+				Token currentToken;
+				List<Token> tokens = new LinkedList<Token>();
 				try {
-					while((token = analisadorLexico.nextToken()) != null);
-					JOptionPane.showMessageDialog(JanelaEditor.this, 
-							"Sem erros", "Análise Léxica", 
-							JOptionPane.INFORMATION_MESSAGE);
+					while((currentToken = analisadorLexico.nextToken()) != null)
+						tokens.add(currentToken);
+					
+					JanelaAnaliseLexica.showTokens(tokens);
 				} catch (LexicalError e) {
 					JOptionPane.showMessageDialog(JanelaEditor.this, 
 							e.getMessage(), "Erro Léxico", 
 							JOptionPane.ERROR_MESSAGE);
 					editorText.setCaretPosition(e.getPosition());
+					tokens.add(new Token(-1, e.getMessage(), e.getPosition()));
+					
+					JanelaAnaliseLexica.showTokens(tokens);
 				}
 			}
 		});
