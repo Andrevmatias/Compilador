@@ -123,7 +123,7 @@ public class JanelaEditor extends JFrame {
 		fileMenu.add(saveItem);
 		fileMenu.add(saveAsItem);
 		
-		lexicoMenu = new JMenu("L�xico");
+		lexicoMenu = new JMenu("Léxico");
 		lexicoMenu.setMnemonic(KeyEvent.VK_L);
 		lexicoMenu.addMouseListener(new MouseListener() {
 			
