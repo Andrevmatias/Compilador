@@ -8,7 +8,7 @@ import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
  * @author André Matias
- * @version %G%
+ * Última atualização 16/11/2014
  */
 public class TokenTableModel extends AbstractTableModel {
 	

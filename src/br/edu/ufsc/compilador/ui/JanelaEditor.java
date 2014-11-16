@@ -28,10 +28,10 @@ import br.edu.ufsc.compilador.analisadores.Lexico;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
- * @author André Victória Matias 
- * Última atualização 02/11/2014
+ * @author André Matias 
+ * Última atualização 16/11/2014
  * 
- * ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
+ * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
  */
 public class JanelaEditor extends JFrame {
 
