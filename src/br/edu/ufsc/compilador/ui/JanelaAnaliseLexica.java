@@ -11,6 +11,8 @@ import br.edu.ufsc.compilador.analisadores.Token;
 /**
  * @author André Matias
  * Última atualização 16/11/2014
+ * 
+ * Janela para exibir tokens da análise léxica
  */
 public class JanelaAnaliseLexica extends JFrame {
 
@@ -24,7 +26,7 @@ public class JanelaAnaliseLexica extends JFrame {
 		setTitle("Análise Léxica");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		this.tokens = tokens;
 		
 		buildList();
@@ -34,6 +36,10 @@ public class JanelaAnaliseLexica extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
+	
+	/**
+	 * Constrói a lista de tokens
+	 */
 	private void buildList() {
 		this.table = new JTable(new TokenTableModel(tokens));
 		
@@ -41,6 +47,10 @@ public class JanelaAnaliseLexica extends JFrame {
 		add(scrollPane);
 	}
 
+	
+	/**
+	 * Cria uma janela para exibição ou atualiza a já exibida
+	 */
 	public static void showTokens(List<Token> tokens) {
 		if(janelaLexico == null)
 			janelaLexico = new JanelaAnaliseLexica(tokens);
@@ -50,6 +60,10 @@ public class JanelaAnaliseLexica extends JFrame {
 		janelaLexico.setVisible(true);
 	}
 
+	
+	/**
+	 * Atualiza a lista de tokens na interface
+	 */
 	private void refresh(List<Token> tokens) {
 		this.tokens = tokens;
 		table.setModel(new TokenTableModel(tokens));

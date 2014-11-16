@@ -23,10 +23,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import br.edu.ufsc.compilador.analisadores.AnalysisError;
 import br.edu.ufsc.compilador.analisadores.LexicalError;
 import br.edu.ufsc.compilador.analisadores.Lexico;
+import br.edu.ufsc.compilador.analisadores.SemanticError;
 import br.edu.ufsc.compilador.analisadores.Sintatico;
+import br.edu.ufsc.compilador.analisadores.SyntaticError;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
@@ -34,6 +35,8 @@ import br.edu.ufsc.compilador.analisadores.Token;
  * Última atualização 16/11/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
+ * 
+ * Janela principal do editor de código
  */
 public class JanelaEditor extends JFrame {
 
@@ -45,7 +48,6 @@ public class JanelaEditor extends JFrame {
 	private JMenu lexicoMenu;
 	private JMenu sintaticoMenu;
 	private JMenu semanticoMenu;
-	
 	
 	private JMenuItem openItem;
 	private JMenuItem saveItem;
@@ -79,6 +81,9 @@ public class JanelaEditor extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * Constrói a barra de menu
+	 */
 	private void buildMenuBar() {
 
 		buildFileMenu();
@@ -93,6 +98,9 @@ public class JanelaEditor extends JFrame {
 		setJMenuBar(menuBar);
 	}
 
+	/**
+	 * Constrói o menu "Arquivo"
+	 */
 	private void buildFileMenu() {
 
 		openItem = new JMenuItem("Abrir...");
@@ -115,7 +123,7 @@ public class JanelaEditor extends JFrame {
 		fileMenu.add(saveItem);
 		fileMenu.add(saveAsItem);
 		
-		lexicoMenu = new JMenu("Léxico");
+		lexicoMenu = new JMenu("L�xico");
 		lexicoMenu.setMnemonic(KeyEvent.VK_L);
 		lexicoMenu.addMouseListener(new MouseListener() {
 			
@@ -142,37 +150,72 @@ public class JanelaEditor extends JFrame {
 				Token currentToken;
 				List<Token> tokens = new LinkedList<Token>();
 				try {
+					//Adiciona cada token analisado à lista de tokens
 					while((currentToken = analisadorLexico.nextToken()) != null)
 						tokens.add(currentToken);
 					
+					//Mostra os tokens reconhecidos em uma janela separada
 					JanelaAnaliseLexica.showTokens(tokens);
 				} catch (LexicalError e) {
-					/*JOptionPane.showMessageDialog(JanelaEditor.this, 
-							e.getMessage(), "Erro Léxico", 
-							JOptionPane.ERROR_MESSAGE);*/
+					//Faz o cursor ir para a posição do erro
 					editorText.setCaretPosition(e.getPosition());
+					
+					//Adiciona um token falso para exibir o erro léxico
+					//na tabela de tokens
 					tokens.add(new Token(-1, e.getMessage(), e.getPosition()));
 					
+					//Mostra os tokens reconhecidos e o erro em uma janela separada
 					JanelaAnaliseLexica.showTokens(tokens);
 				}
 			}
 		});
 		
 		sintaticoMenu = new JMenu("Sintático");
-		sintaticoMenu.setEnabled(false);
 		sintaticoMenu.setMnemonic(KeyEvent.VK_I);
-		sintaticoMenu.addActionListener(new ActionListener() {
+		sintaticoMenu.addMouseListener(new MouseListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//TODO: Análise sintática
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent ev) {
 				String codigo = editorText.getText();
 				Lexico analisadorLexico = new Lexico(codigo);
 				Sintatico analisadorSintatico = new Sintatico();
 				try {
+					//Realiza a análise sintática
 					analisadorSintatico.parse(analisadorLexico);
-				} catch (AnalysisError e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							"Não possui erros sintáticos!", "Análise Sintática", 
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (SyntaticError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Sintático", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				} catch (LexicalError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Léxico", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				} catch (SemanticError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Semântico", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
 				}
 			}
 		});
@@ -189,6 +232,9 @@ public class JanelaEditor extends JFrame {
 		
 	}
 
+	/**
+	 * Listener para abertura de arquivo
+	 */
 	private class OpenListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			int chooserStatus;
@@ -238,6 +284,10 @@ public class JanelaEditor extends JFrame {
 		}
 	}
 
+	
+	/**
+	 * Listener para salvamento de arquivo
+	 */
 	private class SaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			int chooserStatus;

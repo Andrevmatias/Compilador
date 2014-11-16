@@ -9,8 +9,12 @@ import br.edu.ufsc.compilador.analisadores.Token;
 /**
  * @author André Matias
  * Última atualização 16/11/2014
+ * 
+ * @author Gabriel
+ * Última atualização 16/11/2014
+ * 
+ * Modelo de tabela para exibir tokens na análise léxica
  */
-//Gabriel fez alterações.
 public class TokenTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 6616245723082918187L;
@@ -23,7 +27,7 @@ public class TokenTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 3;//Adicionado +1
+		return 3;
 	}
 
 	@Override
@@ -34,20 +38,21 @@ public class TokenTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int linha, int coluna) {
 		switch (coluna) {
-			case 0: //Acredito que deva existir algo mais bonito do que essa gambiarra, mas está funcionando assim Att.Gabriel
+			//Reconhece o tipo de token encontrado pelo ID
+			case 0: 
 				int x =  tokens.get(linha).getId();
 				if(x == 0){
 					return "EPSLON";
 				}else if(x == 1){
 					return "DOLLAR";
 				}else if(x == 2){
-					return "id";
+					return "Identificador";
 				}else if(x == 3 || x == 4){
 					return "Constante Numérica";
 				}else if(x == 5){
 					return "Constante Literal";
 				}else if(x > 33){
-					return "Símbolo Especial"; 
+					return "Simbolo especial"; 
 				}else if(x > 5){
 					return "Palavra Reservada";
 				}else{
@@ -66,11 +71,11 @@ public class TokenTableModel extends AbstractTableModel {
 	public String getColumnName(int coluna) {
 		switch (coluna) {
 			case 0:
-				return "Token";//Reavaliar: Coloquei "Token", mas pode ser "Tipo Token", não sei..
+				return "Tipo";
 			case 1:
 				return "Lexema";
 			case 2:
-				return "Posição";
+				return "Posi��o";
 			default:
 				return "";
 		}

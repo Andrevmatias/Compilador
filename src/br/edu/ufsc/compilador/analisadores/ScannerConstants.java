@@ -1609,7 +1609,7 @@ public interface ScannerConstants
 
     String[] SCANNER_ERROR =
     {
-        "Caractere nÃ£o esperado",
+        "Caractere não aceito na LSI-14/2",
         "",
         "Erro identificando literal",
         "",
@@ -1636,9 +1636,9 @@ public interface ScannerConstants
         "",
         "Erro identificando <ignorar>",
         "",
-        "Erro identificando num_int",
-        "Erro identificando num_real",
-        "Erro identificando num_int",
+        "Erro identificando número inteiro",
+        "Erro identificando número real",
+        "Erro identificando número inteiro",
         "",
         "",
         "",
@@ -1647,12 +1647,12 @@ public interface ScannerConstants
         "Erro identificando <ignorar>",
         "",
         "",
-        "Erro identificando num_int",
+        "Erro identificando número inteiro",
         "",
-        "Erro identificando num_real",
-        "Erro identificando num_real",
+        "Erro identificando número real",
+        "Erro identificando número real",
         "",
-        "Erro identificando num_real",
+        "Erro identificando número real",
         ""
     };
 

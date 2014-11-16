@@ -1,5 +1,10 @@
 package br.edu.ufsc.compilador.analisadores;
 
+/**
+ * 
+ * @author André Matias
+ * Última atualização 16/11/14
+ */
 public class Lexico implements Constants
 {
     private int position;
