@@ -23,13 +23,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import br.edu.ufsc.compilador.analisadores.AnalysisError;
 import br.edu.ufsc.compilador.analisadores.LexicalError;
 import br.edu.ufsc.compilador.analisadores.Lexico;
+import br.edu.ufsc.compilador.analisadores.Sintatico;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
- * @author AndrÈ Matias 
- * ⁄ltima atualizaÁ„o 16/11/2014
+ * @author Andr√© Matias 
+ * √öltima atualiza√ß√£o 16/11/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
  */
@@ -113,7 +115,7 @@ public class JanelaEditor extends JFrame {
 		fileMenu.add(saveItem);
 		fileMenu.add(saveAsItem);
 		
-		lexicoMenu = new JMenu("LÈxico");
+		lexicoMenu = new JMenu("L√©xico");
 		lexicoMenu.setMnemonic(KeyEvent.VK_L);
 		lexicoMenu.addMouseListener(new MouseListener() {
 			
@@ -145,9 +147,9 @@ public class JanelaEditor extends JFrame {
 					
 					JanelaAnaliseLexica.showTokens(tokens);
 				} catch (LexicalError e) {
-					JOptionPane.showMessageDialog(JanelaEditor.this, 
-							e.getMessage(), "Erro LÈxico", 
-							JOptionPane.ERROR_MESSAGE);
+					/*JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro L√©xico", 
+							JOptionPane.ERROR_MESSAGE);*/
 					editorText.setCaretPosition(e.getPosition());
 					tokens.add(new Token(-1, e.getMessage(), e.getPosition()));
 					
@@ -156,23 +158,32 @@ public class JanelaEditor extends JFrame {
 			}
 		});
 		
-		sintaticoMenu = new JMenu("Sint·tico");
+		sintaticoMenu = new JMenu("Sint√°tico");
 		sintaticoMenu.setEnabled(false);
 		sintaticoMenu.setMnemonic(KeyEvent.VK_I);
 		sintaticoMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: An·lise sint·tica
+				//TODO: An√°lise sint√°tica
+				String codigo = editorText.getText();
+				Lexico analisadorLexico = new Lexico(codigo);
+				Sintatico analisadorSintatico = new Sintatico();
+				try {
+					analisadorSintatico.parse(analisadorLexico);
+				} catch (AnalysisError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		
-		semanticoMenu = new JMenu("Sem‚ntico");
+		semanticoMenu = new JMenu("Sem√¢ntico");
 		semanticoMenu.setEnabled(false);
 		semanticoMenu.setMnemonic(KeyEvent.VK_I);
 		semanticoMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: An·lise Sem‚ntica
+				//TODO: An√°lise Sem√¢ntica
 			}
 		});
 		
