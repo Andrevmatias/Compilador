@@ -9,8 +9,8 @@ import javax.swing.JTable;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
- * @author André Matias
- * Última atualização 16/11/2014
+ * @author AndrÃ© Matias
+ * Ãšltima atualizaÃ§Ã£o 16/11/2014
  */
 public class JanelaAnaliseLexica extends JFrame {
 
@@ -21,7 +21,7 @@ public class JanelaAnaliseLexica extends JFrame {
 	
 	
 	private JanelaAnaliseLexica(List<Token> tokens) {
-		setTitle("Análise Léxica");
+		setTitle("AnÃ¡lise LÃ©xica");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
@@ -29,7 +29,7 @@ public class JanelaAnaliseLexica extends JFrame {
 		
 		buildList();
 
-		setSize(300, 400);
+		setSize(500, 400);
 		
 		setLocationRelativeTo(null);
 	}
