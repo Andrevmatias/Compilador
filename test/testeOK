@@ -33,6 +33,11 @@ hjj*/
 //teste teste
             se (1 < 3) entao
                 teste[5+5] := 'teste '''
+/*maistestesgabriel*/
+            senao
+                enquanto nao falso faca leia (x (5*5+5)) ;
+
+            escreva (5.5 <> 'string')
         };
     {
     }.
