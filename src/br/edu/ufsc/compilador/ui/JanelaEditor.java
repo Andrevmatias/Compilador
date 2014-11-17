@@ -31,7 +31,10 @@ import br.edu.ufsc.compilador.analisadores.SyntaticError;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
- * @author André Matias e Gabriel Soares
+ * @author André Matias
+ * Última atualização 16/11/2014
+ * 
+ * @author Gabriel Soares
  * Última atualização 16/11/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
@@ -59,7 +62,7 @@ public class JanelaEditor extends JFrame {
 	private final int NUM_CHARS = 40;
 
 	public JanelaEditor() {
-		setTitle("Compilador");
+		setTitle("Compilador - LSI-14/2");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
