@@ -10,7 +10,7 @@ import br.edu.ufsc.compilador.analisadores.Token;
  * @author André Matias
  * Última atualização 16/11/2014
  * 
- * @author Gabriel
+ * @author Gabriel Soares
  * Última atualização 16/11/2014
  * 
  * Modelo de tabela para exibir tokens na análise léxica
@@ -52,7 +52,7 @@ public class TokenTableModel extends AbstractTableModel {
 				}else if(x == 5){
 					return "Constante Literal";
 				}else if(x > 33){
-					return "Simbolo especial"; 
+					return "Símbolo Especial"; 
 				}else if(x > 5){
 					return "Palavra Reservada";
 				}else{
