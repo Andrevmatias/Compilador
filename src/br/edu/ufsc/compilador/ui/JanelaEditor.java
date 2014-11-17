@@ -31,7 +31,7 @@ import br.edu.ufsc.compilador.analisadores.SyntaticError;
 import br.edu.ufsc.compilador.analisadores.Token;
 
 /**
- * @author André Matias 
+ * @author André Matias e Gabriel Soares
  * Última atualização 16/11/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
