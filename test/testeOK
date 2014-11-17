@@ -1,0 +1,38 @@
+programa teste;
+    const testeConst = 55;
+    var testeVar1, testeVar2 : real;
+
+    metodo testeMetodo(val testeParam, testeParam2 : booleano; ref testeRef : inteiro);
+        const testeConst = 55;
+        var testeVar1, testeVar2 : cadeia[5];
+        var testeVar1, testeVar2 : registro 
+        {
+            var testeVar1 : vetor[1..15] de inteiro;
+            var testeVar2 : vetor[5..10] de real;
+        };
+        {
+        };
+        metodo testeMetodo(val testeParam, testeParam2 : booleano): inteiro;
+        const testeConst = 55;
+        var testeVar1, testeVar2 : cadeia[5];
+        var testeVar1, testeVar2 : registro 
+        {
+            var testeVar1 : vetor[1..15] de inteiro;
+            var testeVar2 : vetor[5..10] de real;
+        };
+        {
+/*hj
+b*
+hjj*/
+            @teste := 5; //teste
+            {
+                  teste[5+5] := 'teste ''';
+                  teste(5+5, 'g');
+                  teste.teste;
+            };
+//teste teste
+            se (1 < 3) entao
+                teste[5+5] := 'teste '''
+        };
+    {
+    }.

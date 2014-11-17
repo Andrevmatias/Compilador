@@ -75,7 +75,7 @@ public class TokenTableModel extends AbstractTableModel {
 			case 1:
 				return "Lexema";
 			case 2:
-				return "Posi��o";
+				return "Posição";
 			default:
 				return "";
 		}
