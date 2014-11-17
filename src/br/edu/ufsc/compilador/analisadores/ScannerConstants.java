@@ -1,5 +1,13 @@
 package br.edu.ufsc.compilador.analisadores;
 
+/**
+ * @author André Matias
+ * Última atualização 16/11/2014
+ * 
+ * @author Gabriel Soares
+ * Última atualização 16/11/2014
+ * 
+ */
 public interface ScannerConstants
 {
 	int[] SCANNER_TABLE_INDEXES = 
