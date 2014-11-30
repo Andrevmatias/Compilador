@@ -1237,7 +1237,7 @@ public interface ScannerConstants
 
 	String[] SCANNER_ERROR =
 		{
-			"Caractere não aceito na LSI-14/2",
+			"Símbolo não esperado",
 			"",
 			"Erro identificando literal",
 			"",
