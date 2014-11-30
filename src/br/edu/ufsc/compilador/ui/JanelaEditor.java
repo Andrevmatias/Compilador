@@ -35,7 +35,7 @@ import br.edu.ufsc.compilador.analisadores.Token;
  * Última atualização 16/11/2014
  * 
  * @author Gabriel Soares
- * Última atualização 16/11/2014
+ * Última atualização 18/11/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
  * 
@@ -51,6 +51,7 @@ public class JanelaEditor extends JFrame {
 	private JMenu lexicoMenu;
 	private JMenu sintaticoMenu;
 	private JMenu semanticoMenu;
+	private JMenu sobreMenu;
 	
 	private JMenuItem openItem;
 	private JMenuItem saveItem;
@@ -97,6 +98,7 @@ public class JanelaEditor extends JFrame {
 		menuBar.add(lexicoMenu);
 		menuBar.add(sintaticoMenu);
 		menuBar.add(semanticoMenu);
+		menuBar.add(sobreMenu);
 
 		setJMenuBar(menuBar);
 	}
@@ -230,6 +232,42 @@ public class JanelaEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO: Análise Semântica
+			}
+		});
+		
+		sobreMenu = new JMenu("Sobre");
+		sobreMenu.setMnemonic(KeyEvent.VK_I);
+		sobreMenu.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent ev) {
+				JOptionPane.showMessageDialog(JanelaEditor.this, 
+						"Compilador - LSI-14/2" + "\nAnalisador Léxico e Sintático\n"
+						+ "-----------" + "\n1ª versão do compilador desenvolvido para a discipina"
+						+ "\nINE5622 - Introdução à Compiladores"
+						+ "\ndo curso de Sistemas de Informação" + "\nda Universidade Federal de Santa Catarina"
+						+ "\n\nSegundo semestre do ano de 2014\n" 
+						+ "\nProfessores:" + "\nOlinto José Varela Furtado" + "\nRicardo Azambuja Silveira"
+						+ "\n-----------" 
+						+ "\nAutores:"
+						+ "\nAndré Victória Matias" + "\nGabriel Soares Costa", "Sobre", 
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
