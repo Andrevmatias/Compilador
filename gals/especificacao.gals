@@ -116,91 +116,91 @@ div = id : "div"
 <rvar>
 <constante_explicita>
 #Grammar
-<programa> ::= programa id  ";"  <bloco> "." ;
+<programa> ::= programa id #101 ";"  <bloco> "." ;
 
 <bloco> ::= <dcl_const>  <dcl_var> <dcl_metodos>  "{"  <lista_com>  "}" ;
  
-<dcl_const> ::= const id "=" <constante>   ";"  <dcl_const> | î ;
+<dcl_const> ::= const id #102 "=" <constante> #103 ";"  <dcl_const> | î ;
 
-<dcl_var> ::= var  <lid>   ":"  <tipo> ";"   <dcl_var> | î ;
+<dcl_var> ::= var #104 <lid>   ":"  <tipo> #105 ";"   <dcl_var> | î ;
  
 <dcl_metodos> ::= <dcl_metodo>  ";"  <dcl_metodos>  |  î ;
 
-<dcl_metodo> ::= metodo id   <par_formais>    <tipo_metodo> ";"   <bloco>  ;                 
+<dcl_metodo> ::= metodo id #106 <par_formais> #107 <tipo_metodo> #108 ";"   <bloco> #109 ;                 
 
-<par_formais> ::= "(" <mp_par> <lid>  ":" <tipo_pre_definido> <rep_par> ")" | î ;                      
+<par_formais> ::= "(" <mp_par> #110 <lid>  ":" <tipo_pre_definido> #111 <rep_par> ")" | î ;                      
 
-<rep_par> ::= ";" <mp_par>  <lid>   ":"  <tipo_pre_definido>  <rep_par>  |  î ;
+<rep_par> ::= ";" <mp_par> #110 <lid>  ":"  <tipo_pre_definido> #111 <rep_par>  |  î ;
 
-<tipo_metodo> ::=   ":"  <tipo_pre_definido>  |  î  ;
+<tipo_metodo> ::=   ":"  <tipo_pre_definido> #112 |  î #113 ;
 
-<lid> ::=  id  <rep_lid> ;
+<lid> ::=  id #114 <rep_lid> ;
 
 <rep_lid> ::=  ","  <lid>  |  î  ;
 
-<mp_par>  ::= ref  |  val ;
+<mp_par>  ::= ref #115 |  val #116 ;
 
 <tipo> ::=   <tipo_pre_definido> 
-             |  cadeia "[" <constante> "]"  
-             |  vetor  "[" <constante>  ".."  <constante> "]" de <tipo_pre_definido> 
-             |  registro "{"  <dcl_var>  "}" ;
+             |  cadeia "[" <constante> #121 "]"  
+             |  vetor  "[" <constante> #122 ".."  <constante> #123 "]" de <tipo_pre_definido> #124
+             |  registro "{" #125 <dcl_var> #126 "}" ;
 
-<constante> ::= id  |  <constante_explicita> ;
+<constante> ::= id #127 |  <constante_explicita> ;
 	     
-<tipo_pre_definido> ::=  inteiro | real | booleano | caracter ;
+<tipo_pre_definido> ::=  inteiro #117 | real #118 | booleano #119 | caracter #120 ;
 
 <lista_com>   ::=  <comando>  <rep_lista_com> ;
 
 <rep_lista_com> ::=  ";"  <comando>  <rep_lista_com>  |  î ;
 
-<comando> ::= id <rcomid>
+<comando> ::= id #128 <rcomid>
              |  "{"  <lista_com>  "}"
-             |  se <expressao> entao <comando> <senaoparte> 
-             |  enquanto <expressao> faca <comando>                               
-             |  leia "(" <var> ")"                                    
-             |  escreva "(" <expressao>  <rep_expr> ")"  
-	    |  retorne <expressao>
+             |  se <expressao> #129 entao <comando> <senaoparte> 
+             |  enquanto <expressao> #129 faca <comando>                               
+             |  leia "(" #130 <var> ")"                                    
+             |  escreva "(" <expressao> #131 <rep_expr> ")"  
+	    |  retorne <expressao> #132
 	    |  î ;
 
 <senaoparte> ::= senao  <comando>  | î ;
 
-<rcomid> ::= ":=" <expressao> 
-               |   "[" <expressao> "]" ":=" <expressao> 
-               |   "(" <expressao> <rep_expr> ")" 
-	      |   "." id ":=" <expressao>
-               |   î ;
+<rcomid> ::= #133 ":=" <expressao> #134
+               |   "["#135 <expressao> #136 "]" ":=" <expressao> #134
+               |   "("#137 <expressao> #138 <rep_expr> ")" #139
+	      |   #140 "." id #141 ":=" <expressao> #134
+               |   î #142;
 
-<rep_expr>  ::= "," <expressao> <rep_expr> | î ;
+<rep_expr>  ::= "," <expressao> #143 <rep_expr> | î ;
 
-<expressao>  ::= <expsimp> <resto_expressao> ;
+<expressao>  ::= <expsimp> #144 <resto_expressao> ;
 
-<resto_expressao> ::= <oprel> <expsimp> | î ;
+<resto_expressao> ::= <oprel> <expsimp> #145 | î ;
 
-<oprel> ::= "=" | "<" | ">" | ">=" | "<=" | "<>" ;
+<oprel> ::= "=" #146 | "<" #147 | ">" #148 | ">=" #149 | "<=" #150 | "<>" #151 ;
 
-<expsimp> ::= <termo> <rep_expsimp> ;
+<expsimp> ::= <termo> #152 <rep_expsimp> ;
 
-<rep_expsimp> ::= <op_add> <termo> <rep_expsimp> | î ;
+<rep_expsimp> ::= <op_add> #153 <termo> #154 <rep_expsimp> | î ;
                       
-<op_add> ::= "+" | "-" | ou ;
+<op_add> ::= "+" #155 | "-" #156 | ou #157 ;
 
-<termo> ::= <fator> <rep_termo> ;
+<termo> ::= <fator> #158 <rep_termo> ;
 
-<rep_termo> ::= <op_mult> <fator> <rep_termo> | î ;
+<rep_termo> ::= <op_mult> #159 <fator> #160 <rep_termo> | î ;
 
-<op_mult> ::= "*" | "/" | e | div ;
+<op_mult> ::= "*" #161 | "/" #162 | e #163 | div #164 ;
 
-<fator> ::= nao <fator> 
-              | "-"  <fator>
-     	     |  "("  <expressao> ")" 
-	     |  <var>
-	     |  <constante_explicita> ;
+<fator> ::= nao <fator> #165
+              | "-"  <fator> #166
+     	     |  "("  <expressao> ")" #167
+	     |  <var> #168
+	     |  <constante_explicita> #169 ;
 
-<var>   ::= id  <rvar>;
+<var>   ::= id #128 <rvar>;
 
-<rvar> ::= "(" <expressao> <rep_expr> ")"  
-              |  "[" <expressao> "]"
-	     |  "."  id
-              |   î ;
+<rvar> ::= "(" #170 <expressao> #138 <rep_expr> ")" #171
+              |  "[" #135 <expressao> #172 "]"
+	     |  #140 "."  id #173
+              |   î #174 ;
   
-<constante_explicita>::=   num_int  |  num_real  |  falso  |  verdadeiro  |  literal;
+<constante_explicita>::=   num_int #175 |  num_real #176 |  falso #177 |  verdadeiro #178 |  literal #179;
