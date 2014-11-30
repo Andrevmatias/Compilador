@@ -14,7 +14,7 @@ Parser = LL
 L: [a-zA-Z]
 D: [0-9]
 E: [@#_]
-EXP: (\+|\-)?(E|e){D}{D}+
+EXP: (E|e)(\+|\-)?{D}{D}+
 CC:[\ \t\n\r]
 BAR: /
 COMMENT : "/*" ([^"*"]|"*"[^/])* "*/"
@@ -26,7 +26,7 @@ id: ({L}|@({L}|{D}))({E}({L}|{D})|{L}|{D})*
 :! {COMMENT}
 
 num_int: {D}+{EXP}?
-num_real: {D}+\.{D}+{EXP}?
+num_real: (({D}+\.{D}*)|\.{D}+){EXP}?
 literal: '([^']|''|\n)*'
 
 var = id : "var"
@@ -120,23 +120,23 @@ div = id : "div"
 
 <bloco> ::= <dcl_const>  <dcl_var> <dcl_metodos>  "{"  <lista_com>  "}" ;
  
-<dcl_const> ::= const id "=" <constante>   ";"  <dcl_const> | î ;
+<dcl_const> ::= const id "=" <constante>   ";"  <dcl_const> | Ã® ;
 
-<dcl_var> ::= var  <lid>   ":"  <tipo> ";"   <dcl_var> | î ;
+<dcl_var> ::= var  <lid>   ":"  <tipo> ";"   <dcl_var> | Ã® ;
  
-<dcl_metodos> ::= <dcl_metodo>  ";"  <dcl_metodos>  |  î ;
+<dcl_metodos> ::= <dcl_metodo>  ";"  <dcl_metodos>  |  Ã® ;
 
 <dcl_metodo> ::= metodo id   <par_formais>    <tipo_metodo> ";"   <bloco>  ;                 
 
-<par_formais> ::= "(" <mp_par> <lid>  ":" <tipo_pre_definido> <rep_par> ")" | î ;                      
+<par_formais> ::= "(" <mp_par> <lid>  ":" <tipo_pre_definido> <rep_par> ")" | Ã® ;                      
 
-<rep_par> ::= ";" <mp_par>  <lid>   ":"  <tipo_pre_definido>  <rep_par>  |  î ;
+<rep_par> ::= ";" <mp_par>  <lid>   ":"  <tipo_pre_definido>  <rep_par>  |  Ã® ;
 
-<tipo_metodo> ::=   ":"  <tipo_pre_definido>  |  î  ;
+<tipo_metodo> ::=   ":"  <tipo_pre_definido>  |  Ã®  ;
 
 <lid> ::=  id  <rep_lid> ;
 
-<rep_lid> ::=  ","  <lid>  |  î  ;
+<rep_lid> ::=  ","  <lid>  |  Ã®  ;
 
 <mp_par>  ::= ref  |  val ;
 
@@ -151,7 +151,7 @@ div = id : "div"
 
 <lista_com>   ::=  <comando>  <rep_lista_com> ;
 
-<rep_lista_com> ::=  ";"  <comando>  <rep_lista_com>  |  î ;
+<rep_lista_com> ::=  ";"  <comando>  <rep_lista_com>  |  Ã® ;
 
 <comando> ::= id <rcomid>
              |  "{"  <lista_com>  "}"
@@ -160,33 +160,33 @@ div = id : "div"
              |  leia "(" <var> ")"                                    
              |  escreva "(" <expressao>  <rep_expr> ")"  
 	    |  retorne <expressao>
-	    |  î ;
+	    |  Ã® ;
 
-<senaoparte> ::= senao  <comando>  | î ;
+<senaoparte> ::= senao  <comando>  | Ã® ;
 
 <rcomid> ::= ":=" <expressao> 
                |   "[" <expressao> "]" ":=" <expressao> 
                |   "(" <expressao> <rep_expr> ")" 
-	      |   "." id
-               |   î ;
+	      |   "." id ":=" <expressao>
+               |   Ã® ;
 
-<rep_expr>  ::= "," <expressao> <rep_expr> | î ;
+<rep_expr>  ::= "," <expressao> <rep_expr> | Ã® ;
 
 <expressao>  ::= <expsimp> <resto_expressao> ;
 
-<resto_expressao> ::= <oprel> <expsimp> | î ;
+<resto_expressao> ::= <oprel> <expsimp> | Ã® ;
 
 <oprel> ::= "=" | "<" | ">" | ">=" | "<=" | "<>" ;
 
 <expsimp> ::= <termo> <rep_expsimp> ;
 
-<rep_expsimp> ::= <op_add> <termo> <rep_expsimp> | î ;
+<rep_expsimp> ::= <op_add> <termo> <rep_expsimp> | Ã® ;
                       
 <op_add> ::= "+" | "-" | ou ;
 
 <termo> ::= <fator> <rep_termo> ;
 
-<rep_termo> ::= <op_mult> <fator> <rep_termo> | î ;
+<rep_termo> ::= <op_mult> <fator> <rep_termo> | Ã® ;
 
 <op_mult> ::= "*" | "/" | e | div ;
 
@@ -201,6 +201,6 @@ div = id : "div"
 <rvar> ::= "(" <expressao> <rep_expr> ")"  
               |  "[" <expressao> "]"
 	     |  "."  id
-              |   î ;
+              |   Ã® ;
   
 <constante_explicita>::=   num_int  |  num_real  |  falso  |  verdadeiro  |  literal;
