@@ -4,7 +4,7 @@ import java.util.Stack;
 
 /**
  * @author Gabriel Soares
- * Última atualização 16/11/14
+ * Última atualização 02/12/2014
  */
 public class Sintatico implements Constants
 {
@@ -96,11 +96,11 @@ public class Sintatico implements Constants
             return false;
     }
 
-    //public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError
-    public void parse(Lexico scanner) throws LexicalError, SyntaticError, SemanticError
+    public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError
+    //public void parse(Lexico scanner) throws LexicalError, SyntaticError, SemanticError
     {
         this.scanner = scanner;
-       //this.semanticAnalyser = semanticAnalyser;
+        this.semanticAnalyser = semanticAnalyser;
 
         stack.clear();
         stack.push(new Integer(DOLLAR));
