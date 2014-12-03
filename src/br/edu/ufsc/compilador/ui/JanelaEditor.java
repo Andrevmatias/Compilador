@@ -26,6 +26,7 @@ import javax.swing.JTextArea;
 import br.edu.ufsc.compilador.analisadores.LexicalError;
 import br.edu.ufsc.compilador.analisadores.Lexico;
 import br.edu.ufsc.compilador.analisadores.SemanticError;
+import br.edu.ufsc.compilador.analisadores.Semantico;
 import br.edu.ufsc.compilador.analisadores.Sintatico;
 import br.edu.ufsc.compilador.analisadores.SyntaticError;
 import br.edu.ufsc.compilador.analisadores.Token;
@@ -35,7 +36,7 @@ import br.edu.ufsc.compilador.analisadores.Token;
  * Última atualização 16/11/2014
  * 
  * @author Gabriel Soares
- * Última atualização 18/11/2014
+ * Última atualização 02/12/2014
  * 
  * Baseado em: ftp://ftp.awl.com/cseng/authors/gaddis/java/Control_Objects/3e/SOURCECODE/Case%20Studies/Simple%20Text%20Editor/TextEditor.java
  * 
@@ -200,9 +201,10 @@ public class JanelaEditor extends JFrame {
 				String codigo = editorText.getText();
 				Lexico analisadorLexico = new Lexico(codigo);
 				Sintatico analisadorSintatico = new Sintatico();
+				Semantico analisadorSemantico = new Semantico(); //Necessário para executar o Sintático
 				try {
 					//Realiza a análise sintática
-					analisadorSintatico.parse(analisadorLexico);
+					analisadorSintatico.parse(analisadorLexico, analisadorSemantico);
 					JOptionPane.showMessageDialog(JanelaEditor.this, 
 							"Não possui erros sintáticos!", "Análise Sintática", 
 							JOptionPane.INFORMATION_MESSAGE);
