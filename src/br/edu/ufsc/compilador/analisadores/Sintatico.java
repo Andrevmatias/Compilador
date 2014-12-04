@@ -2,6 +2,8 @@ package br.edu.ufsc.compilador.analisadores;
 
 import java.util.Stack;
 
+import br.edu.ufsc.compilador.analisadores.semantico.IdentificadorJaDefinidoException;
+
 /**
  * @author Gabriel Soares
  * Última atualização 02/12/2014
@@ -74,7 +76,12 @@ public class Sintatico implements Constants
         }
         else // isSemanticAction(x)
         {
-            semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
+            try {
+				semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
+			} catch (IdentificadorJaDefinidoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             return false;
         }
     }
