@@ -3,6 +3,11 @@ package br.edu.ufsc.compilador.analisadores;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.*;
 import br.edu.ufsc.compilador.analisadores.semantico.*;
 
+/**
+ * @author Gabriel Soares
+ * Última atualização 04/12/2014
+ */
+
 public class Semantico implements Constants
 {
 	TabelaDeSimbolos tabela = new TabelaDeSimbolos();
