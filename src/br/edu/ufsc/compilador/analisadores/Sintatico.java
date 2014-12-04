@@ -6,7 +6,7 @@ import br.edu.ufsc.compilador.analisadores.semantico.IdentificadorJaDefinidoExce
 
 /**
  * @author Gabriel Soares
- * Última atualização 02/12/2014
+ * Última atualização 04/12/2014
  */
 public class Sintatico implements Constants
 {
