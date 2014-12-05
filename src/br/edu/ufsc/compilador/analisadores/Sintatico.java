@@ -2,15 +2,16 @@ package br.edu.ufsc.compilador.analisadores;
 
 import java.util.Stack;
 
-import br.edu.ufsc.compilador.analisadores.semantico.IdentificadorJaDefinidoException;
-
 /**
  * @author Gabriel Soares
  * Última atualização 04/12/2014
+ * 
+ * @author Gabriel Soares
+ * Última atualização 05/12/2014
  */
 public class Sintatico implements Constants
 {
-    private Stack stack = new Stack();
+    private Stack<Integer> stack = new Stack<>();
     private Token currentToken;
     private Token previousToken;
     private Lexico scanner;
@@ -24,11 +25,6 @@ public class Sintatico implements Constants
     private static final boolean isNonTerminal(int x)
     {
         return x >= FIRST_NON_TERMINAL && x < FIRST_SEMANTIC_ACTION;
-    }
-
-    private static final boolean isSemanticAction(int x)
-    {
-        return x >= FIRST_SEMANTIC_ACTION;
     }
 
     private boolean step() throws LexicalError, SyntaticError, SemanticError
@@ -74,16 +70,12 @@ public class Sintatico implements Constants
             else
                 throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
         }
-        else // isSemanticAction(x)
+        else if (semanticAnalyser != null)
         {
-            try {
-				semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
-			} catch (IdentificadorJaDefinidoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			semanticAnalyser.executeAction(x-FIRST_SEMANTIC_ACTION, previousToken);
             return false;
         }
+        return false;
     }
 
     private boolean pushProduction(int topStack, int tokenInput)
@@ -103,8 +95,8 @@ public class Sintatico implements Constants
             return false;
     }
 
-    public void parse(Lexico scanner, Semantico semanticAnalyser) throws LexicalError, SyntaticError, SemanticError
-    //public void parse(Lexico scanner) throws LexicalError, SyntaticError, SemanticError
+    public void parse(Lexico scanner, Semantico semanticAnalyser) 
+    		throws LexicalError, SyntaticError, SemanticError
     {
         this.scanner = scanner;
         this.semanticAnalyser = semanticAnalyser;

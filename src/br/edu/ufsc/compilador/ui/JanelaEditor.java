@@ -201,10 +201,9 @@ public class JanelaEditor extends JFrame {
 				String codigo = editorText.getText();
 				Lexico analisadorLexico = new Lexico(codigo);
 				Sintatico analisadorSintatico = new Sintatico();
-				Semantico analisadorSemantico = new Semantico(); //Necessário para executar o Sintático
 				try {
 					//Realiza a análise sintática
-					analisadorSintatico.parse(analisadorLexico, analisadorSemantico);
+					analisadorSintatico.parse(analisadorLexico, null);
 					JOptionPane.showMessageDialog(JanelaEditor.this, 
 							"Não possui erros sintáticos!", "Análise Sintática", 
 							JOptionPane.INFORMATION_MESSAGE);
@@ -228,12 +227,35 @@ public class JanelaEditor extends JFrame {
 		});
 		
 		semanticoMenu = new JMenu("Semântico");
-		semanticoMenu.setEnabled(false);
 		semanticoMenu.setMnemonic(KeyEvent.VK_I);
 		semanticoMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO: Análise Semântica
+				String codigo = editorText.getText();
+				Lexico analisadorLexico = new Lexico(codigo);
+				Sintatico analisadorSintatico = new Sintatico();
+				Semantico analisadorSemantico = new Semantico();
+				try {
+					analisadorSintatico.parse(analisadorLexico, analisadorSemantico);
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							"Não possui erros sintáticos!", "Análise Sintática", 
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (SyntaticError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Sintático", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				} catch (LexicalError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Léxico", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				} catch (SemanticError e) {
+					JOptionPane.showMessageDialog(JanelaEditor.this, 
+							e.getMessage(), "Erro Semântico", 
+							JOptionPane.ERROR_MESSAGE);
+					editorText.setCaretPosition(e.getPosition());
+				}
 			}
 		});
 		

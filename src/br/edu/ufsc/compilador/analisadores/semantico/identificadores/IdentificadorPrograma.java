@@ -6,7 +6,7 @@ package br.edu.ufsc.compilador.analisadores.semantico.identificadores;
  */
 public class IdentificadorPrograma extends Identificador {
 
-	protected IdentificadorPrograma(String nome) {
+	public IdentificadorPrograma(String nome) {
 		super(nome);
 	}
 
