@@ -13,7 +13,7 @@ import java.util.List;
 public class IdentificadorMetodo extends Identificador {
 
 	private int enderecoPrimeiraInstrucao;
-	private TipoPredefinido tipo;
+	private Tipo tipo;
 	private List<IdentificadorParametro> parametros;
 	
 	/**
@@ -23,7 +23,7 @@ public class IdentificadorMetodo extends Identificador {
 	 * @param tipo Tipo da constante
 	 */
 	public IdentificadorMetodo(String nome, int enderecoPrimeiraInstrucao,
-			List<IdentificadorParametro> parametros, TipoPredefinido tipo) {
+			List<IdentificadorParametro> parametros, Tipo tipo) {
 		super(nome);
 		this.enderecoPrimeiraInstrucao = enderecoPrimeiraInstrucao;
 		this.tipo = tipo;
@@ -45,7 +45,7 @@ public class IdentificadorMetodo extends Identificador {
 		return enderecoPrimeiraInstrucao;
 	}
 
-	public TipoPredefinido getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
 	
@@ -55,5 +55,13 @@ public class IdentificadorMetodo extends Identificador {
 
 	public List<IdentificadorParametro> getParametros() {
 		return parametros;
+	}
+	
+	public void setEnderecoPrimeiraInstrucao(int enderecoPrimeiraInstrucao) {
+		this.enderecoPrimeiraInstrucao = enderecoPrimeiraInstrucao;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 }

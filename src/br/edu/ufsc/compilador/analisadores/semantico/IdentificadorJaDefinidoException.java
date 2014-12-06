@@ -1,7 +1,7 @@
 package br.edu.ufsc.compilador.analisadores.semantico;
 
 /**
- * Exceção de identificador já definido em um certo nível
+ * Exceção de identificador já definido em um certo nível ou mesmo que o do programa
  * @author André
  */
 public class IdentificadorJaDefinidoException extends Exception {
@@ -13,5 +13,9 @@ public class IdentificadorJaDefinidoException extends Exception {
 					+ nome 
 					+ " já foi definido no nível " 
 					+ nivel);
+	}
+
+	public IdentificadorJaDefinidoException(String msg) {
+		super(msg);
 	}
 }

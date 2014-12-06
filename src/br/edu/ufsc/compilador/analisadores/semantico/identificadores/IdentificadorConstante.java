@@ -9,25 +9,33 @@ package br.edu.ufsc.compilador.analisadores.semantico.identificadores;
  */
 public class IdentificadorConstante extends Identificador {
 
-	private Object valor;
-	private TipoPredefinido tipo;
-	
+	private String valor;
+	private Tipo tipo;
+
 	/**
 	 * @param nome Nome da constante
 	 * @param valor Valor da constante
 	 * @param tipo Tipo da constante
 	 */
-	public IdentificadorConstante(String nome, Object valor, TipoPredefinido tipo) {
+	public IdentificadorConstante(String nome, String valor, Tipo tipo) {
 		super(nome);
 		this.valor = valor;
 		this.tipo = tipo;
 	}
 
-	public Object getValor() {
+	public String getValor() {
 		return valor;
 	}
 
-	public TipoPredefinido getTipo() {
+	public Tipo getTipo() {
 		return tipo;
+	}
+	
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 }

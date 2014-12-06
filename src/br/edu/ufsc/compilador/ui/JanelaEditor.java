@@ -228,9 +228,25 @@ public class JanelaEditor extends JFrame {
 		
 		semanticoMenu = new JMenu("Semântico");
 		semanticoMenu.setMnemonic(KeyEvent.VK_I);
-		semanticoMenu.addActionListener(new ActionListener() {
+		semanticoMenu.addMouseListener(new MouseListener(){
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent ev) {
 				String codigo = editorText.getText();
 				Lexico analisadorLexico = new Lexico(codigo);
 				Sintatico analisadorSintatico = new Sintatico();
@@ -238,7 +254,7 @@ public class JanelaEditor extends JFrame {
 				try {
 					analisadorSintatico.parse(analisadorLexico, analisadorSemantico);
 					JOptionPane.showMessageDialog(JanelaEditor.this, 
-							"Não possui erros sintáticos!", "Análise Sintática", 
+							"Não possui erros Semânticos!", "Análise Semântica", 
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (SyntaticError e) {
 					JOptionPane.showMessageDialog(JanelaEditor.this, 

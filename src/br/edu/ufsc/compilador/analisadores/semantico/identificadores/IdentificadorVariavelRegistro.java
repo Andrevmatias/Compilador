@@ -21,11 +21,12 @@ public class IdentificadorVariavelRegistro extends IdentificadorVariavel {
 	 */
 	public IdentificadorVariavelRegistro(String nome, int deslocamento, 
 			Collection<IdentificadorVariavelCampoRegistro> listaCampos) {
-		super(nome, deslocamento);
+		super(nome, deslocamento, Tipo.REGISTRO);
 		this.listaCampos = new HashMap<String, IdentificadorVariavelCampoRegistro>();
 		
-		for(IdentificadorVariavelCampoRegistro campo : listaCampos)
-			this.listaCampos.put(campo.getNome(), campo);
+		if(listaCampos != null)
+			for(IdentificadorVariavelCampoRegistro campo : listaCampos)
+				this.listaCampos.put(campo.getNome(), campo);
 	}
 
 	public Collection<IdentificadorVariavelCampoRegistro> getListaCampos() {

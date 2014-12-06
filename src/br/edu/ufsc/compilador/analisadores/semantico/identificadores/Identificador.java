@@ -4,7 +4,7 @@ package br.edu.ufsc.compilador.analisadores.semantico.identificadores;
  * Classe base para identificadores
  * @author André
  */
-public abstract class Identificador {
+public class Identificador {
 	private String nome;
 
 	public String getNome() {
@@ -15,7 +15,7 @@ public abstract class Identificador {
 		this.nome = nome;
 	}
 	
-	protected Identificador(String nome){
+	public Identificador(String nome){
 		this.nome = nome;
 	}
 }

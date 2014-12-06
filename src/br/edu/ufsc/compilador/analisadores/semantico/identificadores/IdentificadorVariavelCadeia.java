@@ -10,7 +10,7 @@ package br.edu.ufsc.compilador.analisadores.semantico.identificadores;
 public class IdentificadorVariavelCadeia extends IdentificadorVariavel {
 
 	private int tamanho;
-	
+
 	/**
 	 * @param nome Nome do identificador
 	 * @param deslocamento Deslocamento de memória da variável
@@ -18,11 +18,16 @@ public class IdentificadorVariavelCadeia extends IdentificadorVariavel {
 	 */
 	public IdentificadorVariavelCadeia(String nome, int deslocamento, 
 			int tamanho) {
-		super(nome, deslocamento);
+		super(nome, deslocamento, Tipo.CADEIA);
 		this.tamanho = tamanho;
 	}
 
 	public int getTamanho() {
 		return tamanho;
+	}
+	
+	
+	public void setTamanho(int tamanho) {
+		this.tamanho = tamanho;
 	}
 }

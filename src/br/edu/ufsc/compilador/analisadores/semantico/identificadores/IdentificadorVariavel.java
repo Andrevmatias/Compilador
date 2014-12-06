@@ -10,13 +10,26 @@ package br.edu.ufsc.compilador.analisadores.semantico.identificadores;
 public abstract class IdentificadorVariavel extends Identificador {
 	
 	private int deslocamento;
+	private Tipo tipo;
 	
-	protected IdentificadorVariavel(String nome, int deslocamento) {
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+
+	protected IdentificadorVariavel(String nome, int deslocamento, Tipo tipo) {
 		super(nome);
 		this.deslocamento = deslocamento;
 	}
 
 	public int getDeslocamento() {
 		return deslocamento;
+	}
+
+	public void setDeslocamento(int deslocamento) {
+		this.deslocamento = deslocamento;
 	}
 }
