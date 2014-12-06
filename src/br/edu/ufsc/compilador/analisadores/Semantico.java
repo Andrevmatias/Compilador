@@ -15,7 +15,9 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.Identificad
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorPrograma;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavel;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelCadeia;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelCampoRegistro;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelRegistro;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelTipoPredefinido;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelVetor;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.Tipo;
 import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassagemParametro;
@@ -428,8 +430,50 @@ public class Semantico implements Constants
 		}
 	}
 
-	private void acao105(Token token) {
-    	//TODO Implementar
+	private void acao105(Token token) throws SemanticError {
+		try {
+			for(Identificador id : listaIdsVariaveis)
+				tabela.override(completarIdVariavel(id), nivelAtual);
+		} catch (IdentificadorJaDefinidoException e) {
+			throw new SemanticError(e.getMessage(), token.getPosition());
+		}
+	}
+
+	private IdentificadorVariavel completarIdVariavel(Identificador id) throws SemanticError {
+		switch(tipoAtual){
+			case VETOR:
+				return completarIdVariavelVetor(id);
+			case CADEIA:
+				return completarIdVariavelCadeia(id);
+			case REGISTRO:
+				return completarIdVariavelRegistro(id);
+			default:
+				return new IdentificadorVariavelTipoPredefinido(id.getNome(), deslocamento++, tipoAtual);
+		}
+	}
+
+	private IdentificadorVariavelRegistro completarIdVariavelRegistro(Identificador id) {
+		int deslocamentoRegistro = deslocamento;
+		deslocamento += listaIdsCamposRegistro.size();
+		//TODO: Encontrar solução para lista de campos do registro 
+		return new IdentificadorVariavelRegistro(id.getNome(), 
+				deslocamentoRegistro, null);
+	}
+
+	private IdentificadorVariavelCadeia completarIdVariavelCadeia(Identificador id) {
+		return new IdentificadorVariavelCadeia(id.getNome(), deslocamento++, 
+				Integer.parseInt(valorConstante));
+	}
+
+	private IdentificadorVariavelVetor completarIdVariavelVetor(Identificador id)
+			throws SemanticError {
+		int limiteSuperior = Integer.parseInt(valorConstante);
+		int tamanho = limiteSuperior - valorLimiteInferior + 1;
+		int deslocamentoVetor = deslocamento;
+		deslocamento += tamanho;
+		return new IdentificadorVariavelVetor(id.getNome(), deslocamentoVetor, 
+				tipoElementos, tipoLimiteInferior, valorLimiteInferior, 
+				limiteSuperior);
 	}
 
 	private void acao104(Token token) {

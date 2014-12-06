@@ -84,4 +84,22 @@ public class TabelaDeSimbolos {
 	public void clear(int nivel){
 		tabela.remove(nivel);
 	}
+	
+	/**
+	 * Substitui o objeto de informações de um identificador
+	 * @param id Objeto com informações do identificador
+	 * @param nivel Nível onde deve ocorrer a operação
+	 * @throws IdentificadorJaDefinidoException Caso o identificador a ser substituido seja o do programa
+	 */
+	public void override(Identificador id, int nivel) 
+			throws IdentificadorJaDefinidoException{
+		verificarIdPrograma(id);
+		
+		HashMap<String, Identificador> tabelaNivel = tabela.get(nivel);
+		
+		if(!tabelaNivel.containsKey(id.getNome()))
+			throw new RuntimeException("Este identificador não existe para ser sobreescrito");
+		
+		tabelaNivel.put(id.getNome(), id);
+	}
 }
