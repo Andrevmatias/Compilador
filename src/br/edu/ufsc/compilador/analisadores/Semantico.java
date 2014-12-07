@@ -24,7 +24,7 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassage
 
 /**
  * @author Gabriel Soares
- * Última atualização 04/12/2014
+ * Última atualização 07/12/2014
  * @author André Matias
  * Última atualização 05/12/2014
  */
@@ -42,6 +42,7 @@ public class Semantico implements Constants
 	private int deslocamento = 0;
 	
 	private Identificador idAtual = null;
+	private IdentificadorVariavelRegistro regAtual = null;
 	private Stack<IdentificadorMetodo> pilhaMetodosAtuais = new Stack<>();
 	
 	private ContextoListaIds contextoListaIds;
@@ -53,6 +54,10 @@ public class Semantico implements Constants
 	private Tipo tipoMetodo;
 	private Tipo tipoLadoEsquerdo;
 	private Tipo tipoVariavelIndexada;
+	private Tipo tipoVariavel;
+	private Tipo tipoTermo;
+	private Tipo tipoFator;
+	private Tipo tipoExpressaoSimples;
 	
 	private String valorConstante;
 	private TipoPassagemParametro metodoDePassagemDeParametro;
@@ -146,16 +151,211 @@ public class Semantico implements Constants
     		break;
     		case 137: acao137(token);
     		break;
-    		case 138: acao138(token);
+    		
+    		case 140: acao140(token);
     		break;
+    		case 141: acao141(token);
+    		break;
+    		/*case 142:
+    		break;
+    		case 143:
+    		break;*/
+    		case 144: acao144();
+    		break;
+    		/*case 145:
+    		break;
+    		case 146:
+    		break;
+    		case 147:
+    		break;
+    		case 148:
+    		break;
+    		case 149:
+    		break;
+    		case 150:
+    		break;
+    		case 151:
+        	break;*/
+    		case 152: acao152();
+        	break;
+    		/*case 153:
+		break;
+    		case 154:
+        	break;*/
+    		case 155: acao155();
+    		break;
+    		case 156: acao156();
+    		break;
+    		case 157: acao157();
+    		break;
+    		case 158: acao158();
+    		break;
+    		/*case 159:
+		break;
+    		case 160:
+		 break;*/
+    		case 161: acao161();
+    		break;
+    		case 162: acao162();
+    		break;
+    		case 163: acao163();
+    		break;
+    		case 164: acao164();
+    		break;
+    		case 165: acao165(token);
+		break;
+    		case 166: acao166(token);
+		break;
+    		case 167: acao167();
+    		break;
+    		case 168: acao168();
+    		break;
+    		case 169: acao169();
+    		break;
+    		/*case 170:
+    		break;
+    		case 171:
+    		break;
+    		case 172:
+    		break;
+    		case 173:
+    		break;
+    		case 174:
+    		break;*/
+    		case 175: acao175(token);
+    		break;
+    		case 176: acao176(token);
+    		break;
+    		case 177: acao177(token);
+    		break;
+    		case 178: acao178(token);
+    		break;
+    		case 179: acao179(token);
+    		break;
+
     		default: 
     			System.out.println("Ação não definida: #"+action+", Token: " + token); 
         }
     }
 
-    private void acao138(Token token) {
+	private void acao179(Token token) {
+		tipoConstante  = Tipo.CARACTERE;
+		valorConstante = token.getLexeme();
+	}
+
+	private void acao178(Token token) {
+		tipoConstante  = Tipo.BOOLEANO;
+		valorConstante = token.getLexeme();
+	}
+
+	private void acao177(Token token) {
+		tipoConstante  = Tipo.BOOLEANO;
+		valorConstante = token.getLexeme();
+	}
+
+	private void acao176(Token token) {
+		tipoConstante  = Tipo.REAL;
+		valorConstante = token.getLexeme();
+	}
+
+    	private void acao175(Token token) {
+		tipoConstante = Tipo.INTEIRO;
+		valorConstante = token.getLexeme();
+	}
+    
+	private void acao169(){
+    		tipoFator = tipoConstante;
+    	}
+    
+	private void acao168(){
+    		tipoFator = tipoVariavel;
+    	}
+    
+    	private void acao167(){
+    		tipoFator = tipoExpressao;
+    	}
+    
+    	private void acao166(Token token) throws SemanticError{
+    		if(tipoFator != Tipo.INTEIRO && tipoFator != Tipo.REAL){
+    			throw new SemanticError("Operador unário exige operando numérico", token.getPosition());
+    		}
+    	}
+    
+    	private void acao165(Token token) throws SemanticError{
+    		if(tipoFator != Tipo.BOOLEANO){
+    			throw new SemanticError("Operador 'não' exige operando BOOLEANO", token.getPosition());
+    		}
+    	}
+    
+    	private void acao164(){
+    		//Guarda operador 'div' para futura geração de código
+    	}
+    
+    	private void acao163(){
+    		//Guarda operador 'e' para futura geração de código
+    	}
+    
+    	private void acao162(){
+    		//Guarda operador '/' para futura geração de código
+	}
+    
+    	private void acao161(){
+    		//Guarda operador '*' para futura geração de código
+    	}
+    
+    	private void acao158(){
+    		tipoTermo = tipoFator;
+    	}
+    
+    	private void acao157(){
+    		//Guarda operador 'ou' para futura geração de código
+    	}
+    
+    	private void acao156(){
+    		//Guarda operador '-' para futura geração de código
+    	}
+    
+    	private void acao155(){
+    		//Guarda operador '+' para futura geração de código
+    	}
+    
+    	private void acao152(){
+    		tipoExpressao = tipoTermo;
+    	}
+    
+    	private void acao144(){
+    		tipoExpressao = tipoExpressaoSimples;
+    	}
+    
+    	private void acao141(Token token) throws SemanticError{
+    		if(idAtual instanceof IdentificadorVariavelCampoRegistro){
+			if(regAtual.getListaCampos().contains(idAtual) /*Assim é verificado se id é campo do regAtual?*/){
+				tipoLadoEsquerdo = ((IdentificadorVariavel) idAtual).getTipo();
+			}
+			else{
+				throw new SemanticError(token.getLexeme() + " não é campo do registro atual", token.getPosition());
+			}
+		}else{
+			throw new SemanticError("Esperava-se um campo de registro", token.getPosition());
+		}
+    	}
+    
+    	private void acao140(Token token) throws SemanticError{
+    		if(idAtual instanceof IdentificadorVariavel){
+			if(idAtual instanceof IdentificadorVariavelRegistro){
+				regAtual = (IdentificadorVariavelRegistro) idAtual; //regAtual = POSID ---- Está correto?
+			}
+			else{
+				throw new SemanticError("Apenas registros podem ser qualificados", token.getPosition());
+			}
+		}else{
+			throw new SemanticError("Variável esperada", token.getPosition());
+		}
+    	}
+    
+     	private void acao138(Token token) {
 		//TODO Verificar se necessário contar parâmetros
-    	contextoExpressao = ContextoExpressao.ParametrosAtuais;
+    		contextoExpressao = ContextoExpressao.ParametrosAtuais;
     	//TODO Terminar
 	}
 
