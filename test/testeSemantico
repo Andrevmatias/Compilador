@@ -1,0 +1,74 @@
+programa nomePrograma;
+
+const ctInt = 3;
+const ctReal = 3.5;
+const ctLit = 'teste';
+const ctTrue = verdadeiro;
+const ctFalso = falso;
+const ctLitCt = ctLit;
+
+var var1Int,var2Int: inteiro;
+var varReal: real;
+
+//var nomePrograma: real; //id de programa não pode ser usado
+//var varReal: inteiro; //id duplicado no nível
+
+var varCaractere: caracter;
+var varCadeia: cadeia[2];
+var varCadeiaCt: cadeia[ctInt];
+
+//var varCadeiaCtLim: cadeia[256]; //Cadeia maior que permitido
+
+var varVetor: vetor[1 .. 10] de caracter;
+var varVetorCt: vetor[ctInt .. 10] de inteiro;
+var varVetorReal: vetor[4 .. 9] de real;
+
+//var varVetorInv: vetor[4 .. 1] de real; // sup< inf
+//var varVetorTip: vetor[3.5 .. 4.6] de real; // tipo índice não suportado
+//var varVetorTipDif: vetor[? .. 5] de real; // tipos diferentes - VERIFICAR COMO ESCREVER CARACTER
+
+var varRegistro: registro 
+	{
+	    var campoInt: inteiro;
+	    var campoReal1, campoReal2: real;
+	    var campo: caracter;
+	    //var campoErr: cadeia[10]; //registro só aceita tipos pré definidos
+	};
+var varRegistro2: registro 
+	{
+	    var campoDoOutro: real;
+	};
+
+metodo metodo1(ref var1Int: real; val b, c:real);
+//var var1Int: inteiro; //id duplicado nível 1
+{
+    varRegistro.campo := 5;
+    //varRegistro.campoNaoExiste := 5; //Campo não definido
+    //varRegistro.campoDoOutro := 5; //Campo de outro registro
+    //ctTrue := falso; //Atribuição de constante
+    varReal := 3;
+    //varReal[10] := 3; //Indexando não vetor
+    //varTesteNao := 5; //Identificador não definido
+    //varVetor.a := 5; //Não registro qualificado
+};
+
+metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
+metodo metodo1(ref var1Int: real; val b, c:real);
+metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
+metodo metodo1(ref var1Int: real; val b, c:real);
+{
+    //retorne 3; //retorne em método sem tipo
+};
+{
+    //retorne 3; TESTAR QUANDO EXPRESSÃO FOR IMPLEMENTADA
+};
+{
+    //retorne 3; //retorne em método sem tipo
+};
+{
+    //retorne 3; TESTAR QUANDO EXPRESSÃO FOR IMPLEMENTADA
+};
+
+{
+    
+}.

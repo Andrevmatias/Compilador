@@ -20,6 +20,6 @@ public class IdentificadorVariavelCampoRegistro extends IdentificadorVariavel {
 			Tipo tipo) throws SemanticError {
 		super(nome, deslocamento, tipo);
 		if(!Tipo.isPreDefinido(tipo))
-			throw new SemanticError("Este tipo de variável exige um tipo pré-definido");
+			throw new SemanticError("Campos de registro exigem um tipo pré-definido");
 	}
 }
