@@ -10,7 +10,7 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.*;
 
 /**
  * @author Gabriel Soares 
- * Última atualização 07/12/2014
+ * Última atualização 08/12/2014
  * @author André Matias 
  * Última atualização 07/12/2014
  */
@@ -185,16 +185,34 @@ public class Semantico implements Constants {
 			case 141:
 				acao141(token);
 				break;
-			/*
-			 * case 142: break; case 143: break;
-			 */
+			case 142:
+				acao142(token);
+				break;
+			/* case 143: break; */
 			case 144:
 				acao144();
 				break;
-			/*
-			 * case 145: break; case 146: break; case 147: break; case 148: break;
-			 * case 149: break; case 150: break; case 151: break;
-			 */
+			case 145:
+				acao145();
+				break;
+			case 146:
+				acao146();
+				break;
+			case 147:
+				acao147();
+				break; 
+			case 148:
+				acao148();
+				break;
+			case 149:
+				acao149();
+				break; 
+			case 150:
+				acao150();
+				break; 
+			case 151:
+				acao151();
+				break;
 			case 152:
 				acao152();
 				break;
@@ -243,9 +261,14 @@ public class Semantico implements Constants {
 			case 169:
 				acao169();
 				break;
-			/*
-			 * case 170: break; case 171: break; case 172: break; case 173: break;
-			 * case 174: break;
+			case 170:
+				acao170();
+				break; 
+			 /*case 171: break; case 172: break;*/ 
+			case 173:
+				acao173(token);
+				break;
+			 /* case 174: break;
 			 */
 			case 175:
 				acao175(token);
@@ -296,7 +319,119 @@ public class Semantico implements Constants {
 		tipoConstante = Tipo.INTEIRO;
 		valorConstante = token.getLexeme();
 	}
-
+	
+	private void acao174(Token token) throws SemanticError{
+		if(idAtual instanceof IdentificadorVariavel){
+			if(((IdentificadorVariavel) idAtual).getTipo() != Tipo.VETOR){
+				if(((IdentificadorVariavel) idAtual).getTipo() != Tipo.REGISTRO){
+					if(leVar){
+						if(((IdentificadorVariavel) idAtual).getTipo() != Tipo.BOOLEANO){
+							leVar = false;
+							//Gera Código de leitura
+						} else {
+							throw new SemanticError("Booleano não pode ser lido", token.getPosition());
+						}
+					} else {
+						tipoVariavel = ((IdentificadorVariavel) idAtual).getTipo();
+					}
+				} else {
+					throw new SemanticError(token.getLexeme() + " deveria ser qualificado");
+				}
+			} else {
+				throw new SemanticError("Vetor deve ser indexado", token.getPosition());
+			}
+		} else if(idAtual instanceof IdentificadorParametro){
+			if(((IdentificadorParametro) idAtual).getTipo() != Tipo.VETOR){
+				if(((IdentificadorParametro) idAtual).getTipo() != Tipo.REGISTRO){
+					if(leVar){
+						if(((IdentificadorParametro) idAtual).getTipo() != Tipo.BOOLEANO){
+							leVar = false;
+							//Gera Código de leitura
+						} else {
+							throw new SemanticError("Booleano não pode ser lido", token.getPosition());
+						}
+					} else {
+						tipoVariavel = ((IdentificadorParametro) idAtual).getTipo();
+					}
+				} else {
+					throw new SemanticError(token.getLexeme() + " deveria ser qualificado");
+				}
+			} else {
+				throw new SemanticError("Vetor deve ser indexado", token.getPosition());
+			}
+		} else if(leVar) {
+			leVar = false;
+			throw new SemanticError("Apenas variáveis e parâmetros podem ser lidos", token.getPosition());
+		} else if(idAtual instanceof IdentificadorMetodo){
+			if(((IdentificadorMetodo) idAtual).getTipo()  != null){
+				if(pilhaMetodosAtuais.peek().getParametros().size() == 0){
+					//tipoVariavel = tipo do resultado da função
+					//Gera código
+				} else {
+					throw new SemanticError("Erro na quantidade de parâmetros (esperava-se 0)", token.getPosition());
+				}
+			} else {
+				throw new SemanticError("Esperava-se método com tipo", token.getPosition());
+			}
+		} else if(idAtual instanceof IdentificadorConstante){
+			tipoVariavel = ((IdentificadorConstante) idAtual).getTipo();
+		} else {
+			throw new SemanticError("Esperava-se variável, parâmetro, método ou constante", token.getPosition());
+		}
+	}
+	
+	private void acao173(Token token) throws SemanticError{
+		try{
+		idAtual = tabela.get(token.getLexeme(), nivelAtual);
+		if (idAtual instanceof IdentificadorVariavelCampoRegistro) {
+			if (regAtual.getListaCampos().contains(idAtual)) {
+				tipoVariavel = ((IdentificadorVariavel) idAtual).getTipo();
+			} else {
+				throw new SemanticError(token.getLexeme()
+						+ " não é campo do registro atual", token.getPosition());
+			}
+		} else {
+			throw new SemanticError("Esperava-se um campo de registro",
+					token.getPosition());
+		}
+		
+		if(leVar){
+			if(tipoVariavel != Tipo.BOOLEANO){
+				leVar = false;
+				//Gera código para leitura
+			} else {
+				throw new SemanticError("Variável booleana não pode ser lida", token.getPosition());
+			}
+		}
+		
+		}catch(IdentificadorNaoDefinidoException ex){
+			throw new SemanticError(ex.getMessage(), token.getPosition());
+		}
+	}
+	
+	private void acao171() throws SemanticError{
+		int numeroEsperado = pilhaMetodosAtuais.peek().getParametros().size();
+		if(numeroParametrosAtuais != numeroEsperado){
+			throw new SemanticError("Erro na quantidade de parâmetros");
+		} else {
+			//tipoVariavel = tipo do resultado da função
+			//Gera código para ativação de método
+		}
+	}
+	private void acao170() throws SemanticError{
+		if(idAtual instanceof IdentificadorMetodo){
+			if(tipoMetodo != null){
+				if(leVar){
+					leVar = false;
+					throw new SemanticError("Só variáveis/parâmetros podem ser lidos");
+				}
+			} else {
+				throw new SemanticError("Esperava-se método com tipo");
+			}
+		} else {
+			throw new SemanticError(idAtual.getNome() + " deveria ser um método");
+		}
+	}
 	private void acao169() {
 		tipoFator = tipoConstante;
 	}
@@ -338,6 +473,7 @@ public class Semantico implements Constants {
 	private void acao161() {
 		// Guarda operador '*' para futura geração de código
 	}
+	
 
 	private void acao158() {
 		tipoTermo = tipoFator;
@@ -356,11 +492,58 @@ public class Semantico implements Constants {
 	}
 
 	private void acao152() {
-		tipoExpressao = tipoTermo;
+		tipoExpressaoSimples = tipoTermo;
 	}
 
+	private void acao151() {
+		// Guarda operador '<>' para futura geração de código
+	}
+	
+	private void acao150() {
+		// Guarda operador '<=' para futura geração de código
+	}
+	
+	private void acao149() {
+		// Guarda operador '>=' para futura geração de código
+	}
+	
+	private void acao148() {
+		// Guarda operador '>' para futura geração de código
+	}
+	
+	private void acao147() {
+		// Guarda operador '<' para futura geração de código
+	}
+	
+	private void acao146() {
+		// Guarda operador '=' para futura geração de código
+	}
+	
+	private void acao145() throws SemanticError{
+		if (!Tipo.isCompativel(tipoExpressao, tipoExpressaoSimples)){
+			throw new SemanticError("Operandos incompatíveis");
+		} else {
+			tipoExpressao = Tipo.BOOLEANO;
+		}
+	}
 	private void acao144() {
 		tipoExpressao = tipoExpressaoSimples;
+	}
+	
+	private void acao142(Token token) throws SemanticError{
+		if (idAtual instanceof IdentificadorMetodo){
+			if(tipoMetodo == null/* .equals???*/){
+				if(pilhaMetodosAtuais.peek().getParametros().size() == 0){
+					//Geração de código para chamada de método
+				} else {
+					throw new SemanticError("Erro na quantidade de parâmetros (esperava-se 0)", token.getPosition());
+				}
+			} else {
+				throw new SemanticError("Esperava-se método sem tipo", token.getPosition());
+			}
+		} else {
+			throw new SemanticError(idAtual.getNome() + " deveria ser um método", token.getPosition());
+		}
 	}
 
 	private void acao141(Token token) throws SemanticError {
