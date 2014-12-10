@@ -23,6 +23,7 @@ public abstract class IdentificadorVariavel extends Identificador {
 	protected IdentificadorVariavel(String nome, int deslocamento, Tipo tipo) {
 		super(nome);
 		this.deslocamento = deslocamento;
+		this.tipo = tipo;
 	}
 
 	public int getDeslocamento() {

@@ -42,7 +42,8 @@ var varRegistro2: registro
 metodo metodo1(ref var1Int: real; val b, c:real);
 //var var1Int: inteiro; //id duplicado nível 1
 {
-    varRegistro.campo := 5;
+    //varRegistro.campo := 5; //Tipo incompativel
+    varRegistro.campoReal1 := 5;
     //varRegistro.campoNaoExiste := 5; //Campo não definido
     //varRegistro.campoDoOutro := 5; //Campo de outro registro
     //ctTrue := falso; //Atribuição de constante
@@ -60,13 +61,14 @@ metodo metodo1(ref var1Int: real; val b, c:real);
     //retorne 3; //retorne em método sem tipo
 };
 {
-    //retorne 3; TESTAR QUANDO EXPRESSÃO FOR IMPLEMENTADA
+    retorne 3 + 4;
 };
 {
     //retorne 3; //retorne em método sem tipo
 };
 {
-    //retorne 3; TESTAR QUANDO EXPRESSÃO FOR IMPLEMENTADA
+    //retorne 'abc'; //Tipo diferente do método
+    retorne 3;
 };
 
 {
