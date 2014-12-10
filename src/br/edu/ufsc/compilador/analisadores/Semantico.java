@@ -10,7 +10,7 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.*;
 
 /**
  * @author Gabriel Soares 
- * Última atualização 08/12/2014
+ * Última atualização 09/12/2014
  * @author André Matias 
  * Última atualização 07/12/2014
  */
@@ -501,12 +501,17 @@ public class Semantico implements Constants {
 		// Guarda operador '*' para futura geração de código
 	}
 	
-	private void acao160() {
-		//TODO
+	private void acao160() throws SemanticError{
+		if (!Tipo.isCompativel(tipoTermo, tipoFator)){
+			throw new SemanticError("Operandos incompatíveis");
+		} else {
+			//TODO tipoTermo = tipo do resultado da operação
+			//Gera código
+		}
 	}
 	
 	private void acao159(Token token) throws SemanticError{
-		String operador = token.getLexeme();//TODO verificar se é .equals ou ==
+		String operador = token.getLexeme();
 		if(operador.equals("*") || operador.equals("/")){
 			if(tipoTermo != Tipo.INTEIRO && tipoTermo != Tipo.REAL){
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
@@ -537,12 +542,17 @@ public class Semantico implements Constants {
 		// Guarda operador '+' para futura geração de código
 	}
 	
-	private void acao154(){
-		//TODO
+	private void acao154() throws SemanticError{
+		if (!Tipo.isCompativel(tipoTermo, tipoExpressaoSimples)){
+			throw new SemanticError("Operandos incompatíveis");
+		} else {
+			//TODO tipoExpressaoSimples = tipo do resultado da operação
+			//Gera código
+		}
 	}
 	
 	private void acao153(Token token) throws SemanticError{
-		String operador = token.getLexeme();//TODO verificar se é .equals ou ==
+		String operador = token.getLexeme();
 		if(operador.equals("+") || operador.equals("-")){
 			if(tipoExpressaoSimples != Tipo.INTEIRO && tipoExpressaoSimples != Tipo.REAL){
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
@@ -594,7 +604,7 @@ public class Semantico implements Constants {
 	}
 	
 	private void acao143(){
-		//TODO Pedir ajuda ao André
+		//TODO Pedir ajuda ao André, não sei fazer
 	}
 	
 	private void acao142(Token token) throws SemanticError{
@@ -714,7 +724,6 @@ public class Semantico implements Constants {
 
 	private void acao134() throws SemanticError {
 		if (!Tipo.isCompativel(tipoLadoEsquerdo, tipoExpressao))
-			System.out.println("cagou aqui");
 			throw new SemanticError("Tipos incompatíveis");
 
 		// Gerar Código
