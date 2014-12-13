@@ -72,13 +72,13 @@ metodo metodo1(ref var1Int: real; val b, c:real);
 metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
 {
     metodo1(var1Int, 3, 4);
-    retorne 5;  //Comentar para "Método com tipo deve possuir retorno"
+    retorne 5 div 3;  //Comentar para "Método com tipo deve possuir retorno"
 };
 {
     //retorne 3; //retorne em método sem tipo
 };
 {
-    retorne 3 + 4;
+    retorne 3 + 4 / 5;
 };
 {
     //retorne 3; //retorne em método sem tipo
@@ -119,15 +119,41 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
     //varChar := varCadeia[2.5];//Índice de cadeia não inteiro
 
    se verdadeiro entao varChar := '5';
-   se falso entao se 5 > 6 entao se 1 entao
+   se falso entao se 5 > 6.5 entao se 1 entao se 5.5 > 6 entao
+       se 'aa' = 'aa' entao  se varVetorCt[1] = 1 entao se 'a' = 'aa' entao 
+       se (3 + 5 + 56) = 10 * (5 div 3) / 10 entao
        varCadeia := 'teste';
 
+   se 'a' = 'a' entao {};
+   //se 'aa' = 1 entao {}; //Operandos incompatíveis
+   //se 'a' = 1 entao {}; //Operandos incompatíveis
    //se '3' entao
    //se 3.5 entao //Expressao inválida
 
    enquanto verdadeiro faca varChar := '5';
    enquanto falso faca enquanto 5 > 6 faca enquanto 1 faca
        varCadeia := 'teste';
+
+    varReal := 1 / 2;
+    varReal := 1 / 2.5 / 2;
+    varReal := 1.5 / 2;
+    //var1Int := 1 / 2;//Resultado Real
+    //var1Int := 2 - 2.5; //Resultado Real
+    //var1Int := 1.5 - 2; //Resultado Real
+    var1Int := 1 div 2;
+    //var1Int := 1 div 2.5;//Div com real
+    varBool := nao varBool;
+    //var1Int := nao varBool; //Resultado incompatível
+    //varBool := nao var1Int; //Operando incompatível
+    var1Int := -1;
+    varReal := -varReal;
+    //varReal := -varBool; //Operador incompatível
+
+    varReal := varRegistro.campoReal2 + 3;
+    varReal := varRegistro.campoInt div varRegistro.campoInt;
+    varReal := varVetorReal[2] + 3;
+    varReal :=  varVetorCt[2]  div varVetorCt[2];
+    varReal := 3.5e-10;
 
    //enquanto '3' faca
    //enquanto 3.5 faca //Expressao inválida
