@@ -10,6 +10,7 @@ const ctChar = 'a';
 var var1Int,var2Int: inteiro;
 var varReal: real;
 var varChar: caracter;
+var varBool: booleano;
 
 //var nomePrograma: real; //id de programa não pode ser usado
 //var varReal: inteiro; //id duplicado no nível
@@ -70,7 +71,7 @@ metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
 metodo metodo1(ref var1Int: real; val b, c:real);
 metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
 {
-    retorne 5; //Comentar para "Método com tipo deve possuir retorno"
+    retorne 5;  //Comentar para "Método com tipo deve possuir retorno"
 };
 {
     //retorne 3; //retorne em método sem tipo
@@ -87,12 +88,6 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
 };
 
 {
-    //metodo1(varRegistro.campoInt) TESTAR QUANDO EXP OK
-    metodoSemParametroSemTipo;
-
-    //metodoSemParametroSemTipo(varReal); //Uso de parâmetros em método sem parâmetros
-    //metodoSemParametroComTipo;//Chamada de método com tipo
-
     varCaractere := 'a';
     //varCaractere := 1; 
     //varChar := varCadeia; 
@@ -102,7 +97,7 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
     varCadeia := 'b';
     varCadeia := 'ajkshdjka';
 
-    //var1Int := metodoSemParametroComTipo; TESTAR QUANDO EXP OK
+    var1Int := metodoSemParametroComTipo;
     //var1Int := metodoSemParametroSemTipo; //Uso de método sem tipo em expressão
 
     //ctInt := 3; //Atribuição a constante
@@ -121,4 +116,36 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
     varCadeia[2] := 'a';
     varCadeia := 'assss';
     //varChar := varCadeia[2.5];//Índice de cadeia não inteiro
+
+   se verdadeiro entao varChar := '5';
+   se falso entao se 5 > 6 entao se 1 entao
+       varCadeia := 'teste';
+
+   //se '3' entao
+   //se 3.5 entao //Expressao inválida
+
+   enquanto verdadeiro faca varChar := '5';
+   enquanto falso faca enquanto 5 > 6 faca enquanto 1 faca
+       varCadeia := 'teste';
+
+   //enquanto '3' faca
+   //enquanto 3.5 faca //Expressao inválida
+
+    leia(varChar);
+    leia(var1Int);
+    leia(varCadeia);
+    //leia(varBool); //Leitura de booleano
+
+    escreva(varChar, var1Int, 'teste:');
+    escreva(var1Int);
+    escreva(varChar);
+    //escreva(varCadeia, varBool); //Impressão de booleano
+
+    metodo1(varRegistro.campoInt, 3, 4);
+    //metodo1(3, 3, 4);
+    //metodo1(varRegistro.campoInt); //Número incompatível de parâmetros
+    metodoSemParametroSemTipo;
+
+    //metodoSemParametroSemTipo(varReal); //Uso de parâmetros em método sem parâmetros
+    //metodoSemParametroComTipo;//Chamada de método com tipo
 }.
