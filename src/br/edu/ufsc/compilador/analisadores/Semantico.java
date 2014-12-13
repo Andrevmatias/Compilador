@@ -25,9 +25,9 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassage
 
 /**
  * @author Gabriel Soares 
- * Última atualização 09/12/2014
+ * Última atualização 13/12/2014
  * @author André Matias 
- * Última atualização 07/12/2014
+ * Última atualização 13/12/2014
  */
 
 public class Semantico implements Constants {
@@ -625,16 +625,22 @@ public class Semantico implements Constants {
 	
 	private void acao154() throws SemanticError{
 		operador = operadorAdd;
-		if (!Tipo.isCompativel(tipoExpressaoSimples, tipoTermo)){
-			throw new SemanticError("Operandos incompatíveis");
-		} else {
-			if(operador.equals("ou")){
-			tipoExpressaoSimples = Tipo.BOOLEANO;
-			}else if(tipoTermo != Tipo.INTEIRO || tipoExpressaoSimples != Tipo.INTEIRO){
-				tipoExpressaoSimples = Tipo.REAL;
-			}else{
-				tipoExpressaoSimples = Tipo.INTEIRO;
+		if (operador.equals("ou")) {
+			if (tipoTermo == Tipo.BOOLEANO && tipoExpressaoSimples == Tipo.BOOLEANO){
+				tipoExpressaoSimples = Tipo.BOOLEANO;
+			} else {
+				throw new SemanticError("Operandos incompatíveis");
 			}
+		}else if (operador.equals("-") || operador.equals("+")){
+			if (tipoTermo == Tipo.INTEIRO && tipoExpressaoSimples == Tipo.INTEIRO){
+				tipoExpressaoSimples = Tipo.INTEIRO;
+			}else if (tipoTermo == Tipo.BOOLEANO || tipoExpressaoSimples == Tipo.BOOLEANO){
+				throw new SemanticError("Operandos incompatíveis");
+			}else if (tipoTermo == Tipo.CARACTERE || tipoExpressaoSimples == Tipo.CARACTERE) {
+				throw new SemanticError("Operandos incompatíveis");
+			}
+		}else {
+			tipoExpressaoSimples = Tipo.REAL;
 		}
 	}
 	
@@ -688,15 +694,16 @@ public class Semantico implements Constants {
 	}
 	
 	private void acao145() throws SemanticError{
-		if (!Tipo.isCompativel(tipoExpressao, tipoExpressaoSimples)){
-			throw new SemanticError("Operandos incompatíveis");
-		} else {
-			tipoExpressao = Tipo.BOOLEANO;
-		}
-		
-		if(!indexandoVetorParametro)
-			parametroAtualPodeSerReferencia = false;
-	}
+        if(tipoExpressao != Tipo.BOOLEANO && tipoExpressaoSimples != Tipo.BOOLEANO){
+            if(tipoExpressao != Tipo.CARACTERE && tipoExpressaoSimples != Tipo.CARACTERE){
+                tipoExpressao = Tipo.BOOLEANO;
+            }else{
+                throw new SemanticError("Operandos incompatíveis");
+            }
+        }else{
+            throw new SemanticError("Operandos incompatíveis");
+        }
+    }
 	
 	private void acao144() {
 		tipoExpressao = tipoExpressaoSimples;
