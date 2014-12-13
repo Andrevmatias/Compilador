@@ -62,7 +62,7 @@ metodo metodo1(ref var1Int: real; val b, c:real);
 metodo metodoSemParametroComTipo : inteiro;{ retorne 3; };
 metodo metodoSemParametroSemTipo;
 { 
-    //b := 5; //Uso de id-parametro de outro método
+    //b := 5; //Uso de id-parametro de outro mÃ©todo
 };
 
 metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
@@ -128,7 +128,7 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
    //se 'aa' = 1 entao {}; //Operandos incompativeis
    //se 'a' = 1 entao {}; //Operandos incompativeis
    //se '3' entao
-   //se 3.5 entao //Expressao inválida
+   //se 3.5 entao //Expressao invÃ¡lida
 
    enquanto verdadeiro faca varChar := '5';
    enquanto falso faca enquanto 5 > 6 faca enquanto 1 faca
@@ -175,13 +175,13 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
     //metodo1(var1Int * var2Int, 3, 4);
     //metodo1(var1Int + var2Int, 3, 4);
     //metodo1(ctReal, 3, 4);
-    //metodo1(3, 3, 4); //Parâmetro de referencia inválido
-    //metodo1(varRegistro.campoInt);//Poucos paremetros
-    //metodo1(varRegistro.campoInt,3,4,5);//Muitos paremetros
+    //metodo1(3, 3, 4); //Parametro de referencia invalido
+    //metodo1(varRegistro.campoInt);//Poucos parametros
+    //metodo1(varRegistro.campoInt,3,4,5);//Muitos parametros
     
     metodoSemParametroSemTipo;
 
-    //metodoSemParametroSemTipo(varReal); //Uso de parametros em método sem parâmetros
+    //metodoSemParametroSemTipo(varReal); //Uso de parametros em mÃ©todo sem parametros
     //metodoSemParametroComTipo;//Chamada de metodo com tipo
 
     //metodoComTipo(varRegistro.campoInt, 3, 4);//Metodo com tipo e parametros usado como comando
@@ -191,7 +191,7 @@ metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
     //var1Int := metodoComTipo(var1Int * var2Int, 3, 4);
     //var1Int := metodoComTipo(var1Int + var2Int, 3, 4);
     //var1Int := metodoComTipo(ctReal, 3, 4);
-    //var1Int := metodoComTipo(3, 3, 4); //Parâmetro de referência invalido
+    //var1Int := metodoComTipo(3, 3, 4); //Parametro de referencia invalido
     //var1Int := metodoComTipo(varRegistro.campoInt); //Poucos parametros
     //var1Int := metodoComTipo(varRegistro.campoInt,3,4,5);//Muitos parametros
 }.
