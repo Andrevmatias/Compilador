@@ -298,8 +298,8 @@ public class JanelaEditor extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent ev) {
 				JOptionPane.showMessageDialog(JanelaEditor.this, 
-						"Compilador - LSI-14/2" + "\nAnalisador Léxico e Sintático\n"
-						+ "-----------" + "\n1ª versão do compilador desenvolvido para a discipina"
+						"Compilador - LSI-14/2" + "\nAnalisador Léxico, Sintático e Semântico\n"
+						+ "-----------" + "\n2ª versão do compilador desenvolvido para a discipina"
 						+ "\nINE5622 - Introdução à Compiladores"
 						+ "\ndo curso de Sistemas de Informação" + "\nda Universidade Federal de Santa Catarina"
 						+ "\n\nSegundo semestre do ano de 2014\n" 

@@ -2,13 +2,14 @@ programa nomePrograma;
 
 const ctInt = 3;
 const ctReal = 3.5;
-const ctLit = 'teste';
+//const ctLit = 'teste'; //Constante de tipo não pré-definido
 const ctTrue = verdadeiro;
 const ctFalso = falso;
-const ctLitCt = ctLit;
+const ctChar = 'a';
 
 var var1Int,var2Int: inteiro;
 var varReal: real;
+var varChar: caracter;
 
 //var nomePrograma: real; //id de programa não pode ser usado
 //var varReal: inteiro; //id duplicado no nível
@@ -22,10 +23,13 @@ var varCadeiaCt: cadeia[ctInt];
 var varVetor: vetor[1 .. 10] de caracter;
 var varVetorCt: vetor[ctInt .. 10] de inteiro;
 var varVetorReal: vetor[4 .. 9] de real;
+var varVetorIndiceChar: vetor['a' .. 'c'] de real;
+var varVetorIndiceChar2: vetor[ctChar .. 'c'] de real;
 
 //var varVetorInv: vetor[4 .. 1] de real; // sup< inf
+//var varVetorInvChar: vetor['c' .. 'a'] de real; // sup< inf
 //var varVetorTip: vetor[3.5 .. 4.6] de real; // tipo índice não suportado
-//var varVetorTipDif: vetor[? .. 5] de real; // tipos diferentes - VERIFICAR COMO ESCREVER CARACTER
+//var varVetorTipDif: vetor['a' .. 5] de real; // tipos diferentes
 
 var varRegistro: registro 
 	{
@@ -41,6 +45,7 @@ var varRegistro2: registro
 
 metodo metodo1(ref var1Int: real; val b, c:real);
 //var var1Int: inteiro; //id duplicado nível 1
+//var nomePrograma: cadeia[10]; //id programa nível 1
 {
     //varRegistro.campo := 5; //Tipo incompativel
     varRegistro.campoReal1 := 5;
@@ -48,15 +53,25 @@ metodo metodo1(ref var1Int: real; val b, c:real);
     //varRegistro.campoDoOutro := 5; //Campo de outro registro
     //ctTrue := falso; //Atribuição de constante
     varReal := 3;
+    var1Int := 3.5;
     //varReal[10] := 3; //Indexando não vetor
     //varTesteNao := 5; //Identificador não definido
     //varVetor.a := 5; //Não registro qualificado
+};
+metodo metodoSemParametroComTipo : inteiro;{ retorne 3; };
+metodo metodoSemParametroSemTipo;
+{ 
+    //b := 5; //Uso de id-parâmetro de outro método
 };
 
 metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
 metodo metodo1(ref var1Int: real; val b, c:real);
 metodo metodoComTipo(ref var1Int: real; val b, c:real) : inteiro;
 metodo metodo1(ref var1Int: real; val b, c:real);
+metodo metodoComTipo2(ref var1Int: real; val b, c:real): inteiro;
+{
+    retorne 5; //Comentar para "Método com tipo deve possuir retorno"
+};
 {
     //retorne 3; //retorne em método sem tipo
 };
@@ -72,5 +87,38 @@ metodo metodo1(ref var1Int: real; val b, c:real);
 };
 
 {
-    
+    //metodo1(varRegistro.campoInt) TESTAR QUANDO EXP OK
+    metodoSemParametroSemTipo;
+
+    //metodoSemParametroSemTipo(varReal); //Uso de parâmetros em método sem parâmetros
+    //metodoSemParametroComTipo;//Chamada de método com tipo
+
+    varCaractere := 'a';
+    //varCaractere := 1; 
+    //varChar := varCadeia; 
+    //var1Int := 5.3; //Tipos incompatíveis
+    varReal := 1;
+    varCadeia := ctChar;
+    varCadeia := 'b';
+    varCadeia := 'ajkshdjka';
+
+    //var1Int := metodoSemParametroComTipo; TESTAR QUANDO EXP OK
+    //var1Int := metodoSemParametroSemTipo; //Uso de método sem tipo em expressão
+
+    //ctInt := 3; //Atribuição a constante
+
+    varVetorIndiceChar['a'] := 3;
+    varChar := varRegistro.campo;
+    //varVetorIndiceChar[1] := 3; //Índice inválido
+    //leia(ctChar);//Leitura de constante
+    //varVetorIndiceChar := 5;
+    //varVetorIndiceChar['a'] := varVetorIndiceChar; //Vetor não indexado
+    //varRegistro := 5;
+    //varRegistro.campo := varRegistro; //Registro não qualifcado
+    //campo := 'a'; 
+    //varChar := campo; //Campo não qualificado
+    varChar := varCadeia[2];
+    varCadeia[2] := 'a';
+    varCadeia := 'assss';
+    //varChar := varCadeia[2.5];//Índice de cadeia não inteiro
 }.

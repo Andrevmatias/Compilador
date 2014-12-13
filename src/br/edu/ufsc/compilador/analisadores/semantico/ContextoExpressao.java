@@ -9,6 +9,6 @@ package br.edu.ufsc.compilador.analisadores.semantico;
  *
  */
 public enum ContextoExpressao {
-	IMPRESSAO, ParametrosAtuais
+	IMPRESSAO, PARAMETROS_ATUAIS
 
 }

@@ -3,10 +3,25 @@ package br.edu.ufsc.compilador.analisadores;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
-import br.edu.ufsc.compilador.analisadores.semantico.*;
-import br.edu.ufsc.compilador.analisadores.semantico.identificadores.*;
+import br.edu.ufsc.compilador.analisadores.semantico.ContextoExpressao;
+import br.edu.ufsc.compilador.analisadores.semantico.ContextoListaIds;
+import br.edu.ufsc.compilador.analisadores.semantico.IdentificadorJaDefinidoException;
+import br.edu.ufsc.compilador.analisadores.semantico.IdentificadorNaoDefinidoException;
+import br.edu.ufsc.compilador.analisadores.semantico.TabelaDeSimbolos;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.Identificador;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorConstante;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorMetodo;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorParametro;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorPrograma;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavel;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelCadeia;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelCampoRegistro;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelRegistro;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelTipoPredefinido;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.IdentificadorVariavelVetor;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.Tipo;
+import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassagemParametro;
 
 /**
  * @author Gabriel Soares 
@@ -44,10 +59,14 @@ public class Semantico implements Constants {
 	private Tipo tipoTermo;
 	private Tipo tipoFator;
 	private Tipo tipoExpressaoSimples;
+	private IdentificadorMetodo idMetodoChamado;
 
 	private String valorConstante;
 	private TipoPassagemParametro metodoDePassagemDeParametro;
 	private boolean analisandoRegistro = false;
+	private boolean indexandoVetorParametro = false; 
+	private boolean parametroAtualPodeSerReferencia = true;
+	private boolean retornoDeclarado;
 	private boolean leVar = false;
 
 	private Tipo tipoLimiteInferior;
@@ -188,7 +207,9 @@ public class Semantico implements Constants {
 			case 142:
 				acao142(token);
 				break;
-			/* case 143: break; */
+			case 143: 
+				acao143();
+				break;
 			case 144:
 				acao144();
 				break;
@@ -219,7 +240,9 @@ public class Semantico implements Constants {
 			case 153:
 				acao153(token);
 				break;
-			/*case 154: break;*/
+			case 154:
+				acao154();
+				break;
 			case 155:
 				acao155();
 				break;
@@ -235,7 +258,9 @@ public class Semantico implements Constants {
 			case 159:
 			  	acao159(token);
 			  	break;
-			/*case 160: break;*/
+			case 160:
+				acao160();
+				break;
 			case 161:
 				acao161();
 				break;
@@ -266,14 +291,18 @@ public class Semantico implements Constants {
 			case 170:
 				acao170();
 				break; 
-			 /*case 171: break;*/
+			case 171:
+				acao171();
+				break;
 			case 172:
 				acao172();
 				break; 
 			case 173:
 				acao173(token);
 				break;
-			 /*case 174: break;*/
+			case 174:
+				acao174(token);
+				break;
 			case 175:
 				acao175(token);
 				break;
@@ -300,8 +329,11 @@ public class Semantico implements Constants {
 	}
 
 	private void acao179(Token token) {
-		tipoConstante = Tipo.CADEIA;
-		valorConstante = token.getLexeme();
+		//Retira aspas
+		valorConstante = token.getLexeme().length() > 2 ?
+				token.getLexeme().substring(1, token.getLexeme().length() - 1) :
+				"";
+		tipoConstante = valorConstante.length() == 1 ? Tipo.CARACTERE : Tipo.CADEIA;
 	}
 
 	private void acao178(Token token) {
@@ -367,8 +399,9 @@ public class Semantico implements Constants {
 			leVar = false;
 			throw new SemanticError("Apenas variáveis e parâmetros podem ser lidos", token.getPosition());
 		} else if(idAtual instanceof IdentificadorMetodo){
-			if(((IdentificadorMetodo) idAtual).getTipo()  != null){
-				if(pilhaMetodosAtuais.peek().getParametros().size() == 0){
+			idMetodoChamado = (IdentificadorMetodo) idAtual;
+			if(idMetodoChamado.getTipo() != null){
+				if(idMetodoChamado.getParametros().size() == 0){
 					//TODO tipoVariavel = tipo do resultado da função
 					//Gera código
 				} else {
@@ -426,6 +459,9 @@ public class Semantico implements Constants {
 				throw new SemanticError("Tipo do índice inválido");
 		}
 		
+		if(tipoVariavelIndexada == Tipo.VETOR)
+			indexandoVetorParametro = false;
+		
 		if(leVar){
 			if(tipoVariavel == Tipo.BOOLEANO){
 				throw new SemanticError("Variável Booleana não pode ser lida");
@@ -444,6 +480,9 @@ public class Semantico implements Constants {
 			//TODO tipoVariavel = tipo do resultado da função
 			//Gera código para ativação de método
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 	private void acao170() throws SemanticError{
 		if(idAtual instanceof IdentificadorMetodo){
@@ -458,9 +497,15 @@ public class Semantico implements Constants {
 		} else {
 			throw new SemanticError(idAtual.getNome() + " deveria ser um método");
 		}
+		
+		idMetodoChamado = (IdentificadorMetodo) idAtual;
+		parametroAtualPodeSerReferencia = true;
 	}
 	private void acao169() {
 		tipoFator = tipoConstante;
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 
 	private void acao168() {
@@ -476,6 +521,9 @@ public class Semantico implements Constants {
 			throw new SemanticError("Operador unário exige operando numérico",
 					token.getPosition());
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 
 	private void acao165(Token token) throws SemanticError {
@@ -483,6 +531,9 @@ public class Semantico implements Constants {
 			throw new SemanticError("Operador 'não' exige operando BOOLEANO",
 					token.getPosition());
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 
 	private void acao164() {
@@ -525,6 +576,9 @@ public class Semantico implements Constants {
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
 			}
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 	private void acao158() {
 		tipoTermo = tipoFator;
@@ -597,20 +651,46 @@ public class Semantico implements Constants {
 		} else {
 			tipoExpressao = Tipo.BOOLEANO;
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 	
 	private void acao144() {
 		tipoExpressao = tipoExpressaoSimples;
 	}
 	
-	private void acao143(){
-		//TODO Pedir ajuda ao André, não sei fazer
+	private void acao143() throws SemanticError{
+		numeroParametrosAtuais++;
+		
+		if(contextoExpressao == ContextoExpressao.PARAMETROS_ATUAIS)
+			verificarParametro();
+		else if(contextoExpressao == ContextoExpressao.IMPRESSAO)
+			if(tipoExpressao == Tipo.BOOLEANO)
+				throw new SemanticError("Tipo inválido para impressão");
+		
+		parametroAtualPodeSerReferencia = true;
 	}
 	
+	private void verificarParametro() throws SemanticError {
+		if(idMetodoChamado.getParametros().size() < numeroParametrosAtuais)
+			throw new SemanticError("Número de parâmetros não corresponde à declaração do método");
+		
+		IdentificadorParametro parFormal 
+			= idMetodoChamado.getParametros().get(numeroParametrosAtuais - 1);
+		if(Tipo.isCompativel(parFormal.getTipo(), tipoExpressao))
+			throw new SemanticError("Tipo da expressão não corresponde ao tipo do parâmetro");
+		
+		if(parFormal.getTipoPassagem() == TipoPassagemParametro.REFERENCIA);
+			if(!parametroAtualPodeSerReferencia)
+				throw new SemanticError("Parâmetros de referência devem ser variáveis ou parâmetros");
+	}
+
 	private void acao142(Token token) throws SemanticError{
 		if (idAtual instanceof IdentificadorMetodo){
-			if(tipoMetodo == null){
-				if(pilhaMetodosAtuais.peek().getParametros().size() == 0){
+			idMetodoChamado = (IdentificadorMetodo) idAtual;
+			if(idMetodoChamado.getTipo() == null){
+				if(idMetodoChamado.getParametros().size() == 0){
 					//Geração de código para chamada de método
 				} else {
 					throw new SemanticError("Erro na quantidade de parâmetros (esperava-se 0)", token.getPosition());
@@ -665,19 +745,11 @@ public class Semantico implements Constants {
 	
 	private void acao138() throws SemanticError {
 		numeroParametrosAtuais = 1;
-		contextoExpressao = ContextoExpressao.ParametrosAtuais;
-		IdentificadorMetodo idMetodo = (IdentificadorMetodo)idAtual;
+		contextoExpressao = ContextoExpressao.PARAMETROS_ATUAIS;
 		
-		if(idMetodo.getParametros().size() < numeroParametrosAtuais)
-			throw new SemanticError("Número de parâmetros não corresponde à declaração do método");
+		verificarParametro();
 		
-		IdentificadorParametro parFormal 
-			= idMetodo.getParametros().get(numeroParametrosAtuais - 1);
-		if(Tipo.isCompativel(parFormal.getTipo(), tipoExpressao))
-			throw new SemanticError("Tipo da expressão não corresponde ao tipo do parâmetro");
-		
-		if(parFormal.getTipoPassagem() == TipoPassagemParametro.REFERENCIA);
-		//TODO Identificar se o parâmetro atual é uma variável 
+		parametroAtualPodeSerReferencia = true;
 	}
 
 	private void acao137() throws SemanticError {
@@ -687,7 +759,9 @@ public class Semantico implements Constants {
 		} else {
 			throw new SemanticError("Identificador de método esperado");
 		}
-
+		
+		idMetodoChamado = (IdentificadorMetodo) idAtual;
+		parametroAtualPodeSerReferencia = true;
 	}
 
 	private void acao136() throws SemanticError {
@@ -720,6 +794,9 @@ public class Semantico implements Constants {
 		} else {
 			throw new SemanticError("Variável esperada");
 		}
+		
+		if(tipoVariavelIndexada == Tipo.VETOR)
+			indexandoVetorParametro = true;
 	}
 
 	private void acao134() throws SemanticError {
@@ -752,6 +829,7 @@ public class Semantico implements Constants {
 			throw new SemanticError(
 					"Tipo da expressão diferente do tipo do método");
 
+		retornoDeclarado = true;
 		// Gerar código
 	}
 
@@ -777,6 +855,12 @@ public class Semantico implements Constants {
 	private void acao128(Token token) throws SemanticError {
 		try {
 			idAtual = tabela.get(token.getLexeme(), nivelAtual);
+			
+			if(idAtual instanceof IdentificadorConstante && !indexandoVetorParametro)
+				parametroAtualPodeSerReferencia = false;
+			
+			if(idAtual instanceof IdentificadorVariavelCampoRegistro)
+				throw new SemanticError("Identificadores de campo de registro só podem ser usados se qualificados");
 		} catch (IdentificadorNaoDefinidoException e) {
 			throw new SemanticError(e.getMessage(), token.getPosition());
 		}
@@ -949,8 +1033,12 @@ public class Semantico implements Constants {
 
 	}
 
-	private void acao109() {
-		pilhaMetodosAtuais.pop();
+	private void acao109() throws SemanticError {
+		IdentificadorMetodo idMetodo = pilhaMetodosAtuais.pop();
+		if(idMetodo.getTipo() != null && !retornoDeclarado)
+			throw new SemanticError("Métodos com tipo devem possuir pelo menos um comando de retorno");
+		
+		retornoDeclarado = false;
 		tabela.clear(nivelAtual);
 		nivelAtual--;
 	}
@@ -1017,12 +1105,14 @@ public class Semantico implements Constants {
 	private IdentificadorVariavelCadeia completarIdVariavelCadeia(
 			Identificador id) {
 		return new IdentificadorVariavelCadeia(id.getNome(), deslocamento++,
-				Integer.parseInt(valorConstante));
+				valorConstante.length());
 	}
 
 	private IdentificadorVariavelVetor completarIdVariavelVetor(Identificador id)
 			throws SemanticError {
-		int limiteSuperior = Integer.parseInt(valorConstante);
+		int limiteSuperior = tipoConstante == Tipo.INTEIRO ?
+				Integer.parseInt(valorConstante) :
+				valorConstante.charAt(0);
 		int tamanho = limiteSuperior - valorLimiteInferior + 1;
 		int deslocamentoVetor = deslocamento;
 		deslocamento += tamanho;
@@ -1061,7 +1151,7 @@ public class Semantico implements Constants {
 		}
 	}
 
-	private void acao103() {
+	private void acao103() throws SemanticError {
 		IdentificadorConstante id = (IdentificadorConstante) idAtual;
 		id.setTipo(tipoConstante);
 		id.setValor(valorConstante);
