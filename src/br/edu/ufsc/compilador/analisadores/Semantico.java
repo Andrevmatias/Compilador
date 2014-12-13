@@ -25,9 +25,9 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassage
 
 /**
  * @author Gabriel Soares 
- * Última atualização 13/12/2014
+ * Última atualização 09/12/2014
  * @author André Matias 
- * Última atualização 13/12/2014
+ * Última atualização 07/12/2014
  */
 
 public class Semantico implements Constants {
@@ -566,27 +566,37 @@ public class Semantico implements Constants {
 	
 	private void acao160() throws SemanticError{
 		operador = operadorMult;
-		if(!Tipo.isCompativel(tipoTermo, tipoFator)){
-			throw new SemanticError("Operandos Incompatíveis");
-		}else if(tipoFator != Tipo.INTEIRO || tipoTermo != Tipo.INTEIRO){
-			if(operador.equals("*") || operador.equals("/")){
-				tipoTermo = Tipo.REAL;
-			}else if(operador.equals("e")){
-				tipoTermo = Tipo.BOOLEANO;
+		if(operador.equals("div")){
+			if(tipoFator == Tipo.INTEIRO && tipoTermo == Tipo.INTEIRO){
+				tipoTermo = Tipo.INTEIRO;
 			}else{
 				throw new SemanticError("Operador 'div' usado apenas para Inteiros");
 			}
-		}else if(operador.equals("div") || operador.equals("*")){
-			tipoTermo = Tipo.INTEIRO;
 		}else if(operador.equals("/")){
-			tipoTermo = Tipo.REAL;
-		}else{
-			throw new SemanticError("Operador 'e' incompatível com Inteiro");
+			if(tipoFator != Tipo.INTEIRO && tipoFator != Tipo.REAL){
+				throw new SemanticError("Operador '/' usado apenas para Inteiros e Reais");
+			}else{
+				tipoTermo = Tipo.REAL;
+			}
+		}else if(operador.equals("*")){
+			if(tipoFator == Tipo.INTEIRO && tipoFator == Tipo.INTEIRO){
+				tipoTermo = Tipo.INTEIRO;
+			}else if(tipoFator == Tipo.REAL || tipoTermo == Tipo.REAL){
+				tipoTermo = Tipo.REAL;
+			}else{
+				throw new SemanticError("Operador '*' usado apenas para Inteiros e Reais");
+			}
+		}else if (operador.equals("e")) {
+			if (tipoFator != Tipo.BOOLEANO || tipoTermo != Tipo.BOOLEANO) {
+				throw new SemanticError("Operador 'e' incompatível com não booleano");
+			}else{
+				tipoTermo = Tipo.BOOLEANO;
+			}
 		}
 	}
 	
 	private void acao159(Token token) throws SemanticError{
-		String operador = token.getLexeme();
+		operador = operadorMult;
 		if(operador.equals("*") || operador.equals("/")){
 			if(tipoTermo != Tipo.INTEIRO && tipoTermo != Tipo.REAL){
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
@@ -638,14 +648,14 @@ public class Semantico implements Constants {
 				throw new SemanticError("Operandos incompatíveis");
 			}else if (tipoTermo == Tipo.CARACTERE || tipoExpressaoSimples == Tipo.CARACTERE) {
 				throw new SemanticError("Operandos incompatíveis");
+			}else {
+				tipoExpressaoSimples = Tipo.REAL;
 			}
-		}else {
-			tipoExpressaoSimples = Tipo.REAL;
 		}
 	}
 	
 	private void acao153(Token token) throws SemanticError{
-		String operador = token.getLexeme();
+		operador = operadorAdd;
 		if(operador.equals("+") || operador.equals("-")){
 			if(tipoExpressaoSimples != Tipo.INTEIRO && tipoExpressaoSimples != Tipo.REAL){
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
