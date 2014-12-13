@@ -1,4 +1,4 @@
-programa nomePrograma;
+﻿programa nomePrograma;
 
 const ctInt = 3;
 const ctReal = 3.5;
