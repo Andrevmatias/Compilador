@@ -6,7 +6,9 @@ Compilador para a disciplina de Introdução a Compiladores.
 ----------
 
 Dentro da pasta "Executável" está o arquivo executável (.jar);
-Dentro da pasta "Testes" estão os arquivos com testes léxicos e sintáticos;
+Dentro da pasta "Teste" está o arquivo de testes semânticos;
+  Obs.: Caso apareçam símbolos estranhos entre as palavras, provavelmente são erros de codificação do texto.
+        Tivemos alguns problemas com isso durante a realização do trabalho.
 Dentro da pasta "Fonte" está o código fonte do compilador.
 
 ----------
