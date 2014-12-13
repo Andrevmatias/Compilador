@@ -25,9 +25,9 @@ import br.edu.ufsc.compilador.analisadores.semantico.identificadores.TipoPassage
 
 /**
  * @author Gabriel Soares 
- * Última atualização 09/12/2014
+ * Última atualização 13/12/2014
  * @author André Matias 
- * Última atualização 07/12/2014
+ * Última atualização 13/12/2014
  */
 
 public class Semantico implements Constants {
@@ -704,14 +704,22 @@ public class Semantico implements Constants {
 	}
 	
 	private void acao145() throws SemanticError{
-        if(tipoExpressao != Tipo.BOOLEANO && tipoExpressaoSimples != Tipo.BOOLEANO){
-            if(tipoExpressao != Tipo.CARACTERE && tipoExpressaoSimples != Tipo.CARACTERE){
-                tipoExpressao = Tipo.BOOLEANO;
+        if(tipoExpressao == Tipo.BOOLEANO && tipoExpressaoSimples == Tipo.BOOLEANO){
+        	tipoExpressao = Tipo.BOOLEANO;
+        }else if(tipoExpressao == Tipo.CARACTERE || tipoExpressao == Tipo.CADEIA){
+        	if(tipoExpressaoSimples == Tipo.CARACTERE || tipoExpressaoSimples == Tipo.CADEIA){
+        		tipoExpressao = Tipo.BOOLEANO;
+            }else{
+                throw new SemanticError("Operandos incompatíveis");
+            }
+        }else if(tipoExpressao == Tipo.INTEIRO || tipoExpressao == Tipo.REAL){
+        	if(tipoExpressaoSimples == Tipo.INTEIRO || tipoExpressaoSimples == Tipo.REAL){
+        		tipoExpressao = Tipo.BOOLEANO;
             }else{
                 throw new SemanticError("Operandos incompatíveis");
             }
         }else{
-            throw new SemanticError("Operandos incompatíveis");
+        	throw new SemanticError("Operandos incompatíveis");
         }
     }
 	
