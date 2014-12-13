@@ -649,6 +649,9 @@ public class Semantico implements Constants {
 				throw new SemanticError("Operador e Operando incompatíveis", token.getPosition());
 			}
 		}
+		
+		if(!indexandoVetorParametro)
+			parametroAtualPodeSerReferencia = false;
 	}
 	private void acao152() {
 		tipoExpressaoSimples = tipoTermo;
@@ -720,7 +723,7 @@ public class Semantico implements Constants {
 		if(!Tipo.isCompativel(parFormal.getTipo(), tipoExpressao))
 			throw new SemanticError("Tipo da expressão não corresponde ao tipo do parâmetro");
 		
-		if(parFormal.getTipoPassagem() == TipoPassagemParametro.REFERENCIA);
+		if(parFormal.getTipoPassagem() == TipoPassagemParametro.REFERENCIA)
 			if(!parametroAtualPodeSerReferencia)
 				throw new SemanticError("Parâmetros de referência devem ser variáveis ou parâmetros");
 	}
@@ -815,6 +818,7 @@ public class Semantico implements Constants {
 			if (tipoExpressao != idVetor.getTipoIndice())
 				throw new SemanticError("Tipo de índice inválido");
 			tipoLadoEsquerdo = idVetor.getTipoElementos();
+			indexandoVetorParametro = false;
 			break;
 		default:
 			break;
@@ -864,7 +868,7 @@ public class Semantico implements Constants {
 			throw new SemanticError(
 					"\"Retorne\" só pode ser utilizado em métodos com tipo");
 
-		if (tipoExpressao != pilhaMetodosAtuais.peek().getTipo())
+		if (!Tipo.isCompativel(pilhaMetodosAtuais.peek().getTipo(), tipoExpressao))
 			throw new SemanticError(
 					"Tipo da expressão diferente do tipo do método");
 
