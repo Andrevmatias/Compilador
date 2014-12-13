@@ -1,0 +1,12 @@
+Compilador
+==========
+
+Compilador para a disciplina de Introdução a Compiladores.
+
+----------
+
+Dentro da pasta "Executável" está o arquivo executável (.jar);
+Dentro da pasta "Testes" estão os arquivos com testes léxicos e sintáticos;
+Dentro da pasta "Fonte" está o código fonte do compilador.
+
+----------
